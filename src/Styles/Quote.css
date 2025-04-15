@@ -1,0 +1,131 @@
+.dashboard-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.quote-main-div{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.day-post-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+  border-color: #BE3144;
+  padding: 8px 13px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #872341 0%, #BE3144 100%);
+}
+
+.img{
+  padding: 23px;
+}
+
+
+.user-day-post{
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.day-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.img-day{
+  padding: 10px;
+  background: #711531;
+  border-radius: 10px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid;
+  border-color: white;
+}
+
+.day-p{
+  color: white;
+  margin: 0;
+}
+
+.day-post-info{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.more-quotes-container{
+  position: relative;
+  margin-left: 17px;
+  padding: 15px 20px;
+  border: 1px solid;
+  border-color: #BE3144;
+  background: linear-gradient(180deg, rgba(190, 49, 68, 0.3) 0%, rgba(135, 35, 65, 0.3) 100%);
+  border-radius: 10px;
+  flex: 1;
+}
+
+.more-quotes-title{
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.more-quotes-description{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: Montserrat;
+  color: white;
+  margin-bottom: 3px;
+}
+
+.more-quotes-button{
+  padding: 10px 14px;
+  color: #872341;
+  font-family: Outfit;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.features-dash{
+  border: 1px solid;
+  flex: 1;
+  margin-top: 15px;
+  padding: 15px;
+  border-color: #BE3144;
+  border-radius: 10px;
+  background-color: #09122C4D;
+}
+
+.quote-container{
+  position: relative;
+  padding: 19px 23px;
+  background: linear-gradient(180deg, #BE3144 0%, #872341 100%);
+  border-radius: 10px;
+  flex: 1;
+}
+
+.quote-title{
+  margin: 0;
+  font-size: 36px;
+  font-weight: 600;
+  color: white;
+}
+
+.quote-description{
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+}

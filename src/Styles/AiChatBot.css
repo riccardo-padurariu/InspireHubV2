@@ -1,0 +1,143 @@
+.chatbot-container{
+  position: relative;
+  border: 1px solid;
+  border-color: #BE3144;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  
+  padding: 43px 0 0 90px;
+  backdrop-filter: blur(50px);
+}
+
+.message{
+  display: flex;
+  flex-direction: row;
+}
+
+.ai-img-chatbot{
+  height: 42px;
+  width: 20px;
+  background: transparent;
+  border: 1px solid;
+  border-color: #BE3144;
+  padding: 0 12px;
+  border-radius: 50%;
+}
+
+.bot-message .message-text{
+  margin-left: 10px;
+  color: white;
+  border-radius: 0px 10px 10px 10px;
+  border: 1px solid;
+  border-color: #BE3144;
+  background: #872341;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.user-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.message-text{
+  word-wrap: break-word;
+  text-wrap: wrap;
+  max-width: 350px;
+
+}
+
+.chat-body{
+  overflow-y: auto;
+  margin-right: 10px;
+  padding-right: 20px;
+  flex: 1;
+
+}
+
+::-webkit-scrollbar{
+  width: 8px;
+}
+
+::-webkit-scrollbar-track{
+  background: #ffffff00;
+}
+
+::-webkit-scrollbar-thumb{
+  background: #872341;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background: #57172a;
+}
+
+::selection{
+  color: rgb(0,0,0);
+  background-color: rgb(255,255,255);
+}
+
+
+.chat-body .user-message{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 0 20px;
+  margin-right: 10px;
+  color: white;
+  border-radius: 10px 0px 10px 10px;
+  border-color: #BE3144;
+  background-color: white;
+  margin-top: 0;
+  max-width: 400px;
+}
+
+.user-message .message-text{
+  color: #872341;
+  font-weight: 500;
+}
+
+.input-chatbot{
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #872341;
+  padding: 15px;
+  border-radius: 25px;
+  font-family: Outfit;
+  font-size: 16px;
+  color: white;
+}
+
+.input-chatbot::placeholder{
+  font-family: Outfit;
+  font-size: 16px;
+  color: white;
+
+}
+
+.chat-footer{
+  margin-right: 250px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+
+.send-text-button{
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 0 15px;
+  align-items: center;
+  display: flex;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.img-send{
+  height: 20px;
+  width: 20px;
+}

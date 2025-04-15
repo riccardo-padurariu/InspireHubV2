@@ -1,0 +1,109 @@
+.login-div{
+  display: flex;
+  flex-direction: column;
+  padding: 120px;
+  position: relative;
+  align-items: center;
+}
+
+.logo{
+  width: 232px;
+  height: 56px;
+}
+
+.title-login{
+  font-family: Outfit;
+  font-size: 16px;
+  color: #C9C9C9;
+  margin: 0 0 12px 0;
+}
+
+.google-signin-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.signin-with-google{
+  font-family: Outfit;
+  font-size: 16px;
+  color: white;
+  background-color: #09122C;
+  padding: 11px 54px 11px 14px;
+  border: 1px solid;
+  border-color: #BE3144;
+  border-radius: 10px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.google-icon{
+  position: relative;
+  margin-right: 25px;
+}
+
+.p-continue{
+  margin-top: 11px;
+  font-size: 13px;
+  color: #737373;
+}
+
+.label{
+  font-size: 12px;
+  margin: 0 0 5px 0;
+}
+
+.data-input{
+  width: 226px;
+  padding: 11px 10px;
+  background-color: transparent;
+  border: 1px solid;
+  border-color: hsl(0, 0%, 23%);
+  border-radius: 10px;
+  color: white;
+}
+
+.data-input::placeholder{
+  font-size: 14px;
+  font-family: Outfit;
+  color: #3A3A3A;
+}
+
+.forgot-password{
+  text-align: start;
+  width: 245px;
+  font-size: 14px;
+  color: #3A3A3A;
+  margin: 0;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.data-input-flexbox{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+}
+
+.signin-button{
+  font-family: Outfit;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  padding: 11px 98px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #BE3144 0%, #872341 100%);
+  cursor: pointer;
+}
+
+.register-link{
+  background: linear-gradient(to top,#BE3144,#872341);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  text-decoration: underline;
+  cursor: pointer;
+}

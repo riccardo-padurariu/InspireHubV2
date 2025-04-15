@@ -1,0 +1,126 @@
+.login-div{
+  display: flex;
+  flex-direction: column;
+  padding: 100px;
+  position: relative;
+  align-items: center;
+}
+
+.logo{
+  width: 232px;
+  height: 56px;
+}
+
+.title-login{
+  font-family: Outfit;
+  font-size: 16px;
+  color: #C9C9C9;
+  margin: 0 0 12px 0;
+}
+
+.google-signin-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.signin-with-google{
+  font-family: Outfit;
+  font-size: 16px;
+  color: white;
+  background-color: #09122C;
+  padding: 11px 54px 11px 14px;
+  border: 1px solid;
+  border-color: #BE3144;
+  border-radius: 10px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.google-icon{
+  position: relative;
+  margin-right: 25px;
+}
+
+.p-continue{
+  margin-top: 11px;
+  font-size: 13px;
+  color: #737373;
+}
+
+.label{
+  font-size: 12px;
+  margin: 0 0 5px 0;
+}
+
+.data-input{
+  width: 226px;
+  padding: 11px 10px;
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #737373;
+  border-radius: 10px;
+  font-family: Outfit;
+  
+}
+
+.data-input::placeholder{
+  font-size: 14px;
+  font-family: Outfit;
+  color: #737373;
+}
+
+.forgot-password{
+  text-align: start;
+  width: 245px;
+  font-size: 14px;
+  color: #737373;
+  margin: 0;
+  margin-top: 14px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.data-input-flexbox{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+}
+
+.signin-button{
+  font-family: Outfit;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  padding: 11px 78px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #BE3144 0%, #872341 100%);
+  cursor: pointer;
+  width: 250px;
+}
+
+.register-link{
+  background: linear-gradient(to top,#BE3144,#872341);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.terms{
+  margin-left: 25px;
+  margin-top: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+.data-input-div{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

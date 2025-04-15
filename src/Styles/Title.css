@@ -1,0 +1,83 @@
+.title-main-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.title-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 140px;
+  position: relative;
+}
+
+.prototype-now-button{
+  width: 195px;
+  height: 40px;
+  font-family: Outfit;
+  font-size: 14px;
+  border: 2px solid;
+  border-color: rgb(62, 2, 126);
+  border-radius: 20px;
+  background-color: rgba(9, 18, 44, 0.3);
+  color: #C9C9C9;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.big-ass-title{
+  background: linear-gradient(to top,#BE3144,#872341);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  font-size: 48px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.big-title{
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  width: 953px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.subtitle{
+  font-size: 16px;
+  background: linear-gradient(to top,#BE3144,#FFFFFF);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  margin-bottom: 30px;
+}
+
+.begin-button{
+  width: 180px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #BE3144 0%, #872341 100%);
+  border: none;
+  color: white;
+  font-family: Outfit;
+  font-size: 16px;
+  position: relative;
+}
+
+.mission-button{
+  width: 180px;
+  height: 40px;
+  margin-left: 20px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid;
+  border-color: #BE3144;
+  color: white;
+  font-family: Outfit;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+
+}

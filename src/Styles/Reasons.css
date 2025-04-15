@@ -1,0 +1,61 @@
+.reasons-main-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 65px;
+}
+
+.why-inspire-hub{
+  margin-left: 480px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 195px;
+  padding: 8px;
+  font-family: Outfit;
+  font-size: 14px;
+  border: 2px solid;
+  border-color: rgb(62, 2, 126);
+  border-radius: 20px;
+  background-color: rgba(9, 18, 44, 0.3);
+  color: #C9C9C9;
+  backdrop-filter: blur(10px);
+}
+
+.main-reason{
+  margin-top: 25px;
+  font-size: 48px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: linear-gradient(to bottom,#FFFFFF,#687DA9);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.reasons-div{
+  display: flex;
+  flex-direction: row;
+}
+
+.reason{
+  position: relative;
+  width: 346px;
+  height: 194px;
+  border: 1px solid;
+  margin-right: 13px;
+  border-radius: 20px;
+  padding: 30px 20px;
+  border-color: rgb(97, 3, 52);
+  backdrop-filter: blur(10px);
+}
+
+.reason-title{
+  font-size: 20px;
+  color: white;
+}
+
+.reason-explanation{
+  font-size: 16px;
+}

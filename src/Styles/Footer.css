@@ -1,0 +1,79 @@
+.div1{
+  display: flex;
+  flex-direction: row;
+}
+
+.pages{
+  display: flex;
+  flex-direction: row;
+  margin-left: 280px;
+  width: 230px;
+  justify-content: space-between;
+}
+
+.div2{
+  display: flex;
+  flex-direction: row;
+}
+
+.footer-main-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 300px;
+  margin-bottom: 100px;
+}
+
+.footer-container{
+  width: 1065px;
+  height: 153px;
+  border: 1px solid;
+  border-color: red;
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+::placeholder,
+.label{
+  color: #737373;
+  font-size: 12px;
+}
+
+.email-input{
+  padding: 13px 11px;
+  border-radius: 12px;
+  background-color: #09122C4D;
+  border: 1px solid;
+  border-color: red;
+  width: 230px;
+  position: absolute;
+}
+
+.input-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.copyright{
+  margin-top: 35px;
+  margin-left: 200px;
+}
+
+.p1{
+  margin: 2px;
+  color: #737373;
+}
+
+.signup-button{
+  position: relative;
+  margin-left: 180px;
+  font-family: Outfit;
+  font-size: 14px;
+  background-color: white;
+  color: #872341;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  padding: 7px 12px;
+}

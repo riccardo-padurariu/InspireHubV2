@@ -1,0 +1,88 @@
+.todolist-container{
+  position: relative;
+  border: 1px solid;
+  flex: 1;
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-color: #BE3144;
+  background: linear-gradient(180deg, rgba(190, 49, 68, 0.3) 0%, rgba(135, 35, 65, 0.3) 100%);
+  border-radius: 10px;
+}
+
+.header-list{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-right: 330px;
+  flex: 1;
+}
+
+.section-todolist{
+  color: white;
+}
+
+
+.todolist-title{
+  font-size: 26px;
+  margin: 0;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.addtask-button{
+  font-family: Outfit;
+  font-size: 16px;
+  color: #872341;
+  background-color: white;
+  padding: 10px 13px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.task-list-container{
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: #BE3144;
+  flex: 1;
+  height: 330px;
+}
+
+.progress-bar-div{
+  background: linear-gradient(180deg, #BE3144 0%, #872341 100%);
+  padding: 0 15px 5px 15px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.title-procent{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.pb-title{
+  margin: 0;
+}
+
+.pb-title{
+  font-size: 19px;
+  font-weight: 600;
+  color: white;
+}
+
+.procent{
+  color: white;
+}
+
+.pb-stats{
+  color: white;
+  text-align: end;
+  margin: 0;
+}
