@@ -66,6 +66,7 @@ export default function ToDoList(props) {
     completedList={completedList}
     setCompletedList={setCompletedList}
     firebaseKey={item.firebaseKey}
+    status={item.status}
    />
   );
 
@@ -82,7 +83,7 @@ export default function ToDoList(props) {
   let result = 0;
 
   if(props.taskList.length > 0) 
-    result =  Math.round(completedList.length / props.taskList.length * 100) 
+    result =  Math.round(completed / props.taskList.length * 100) 
   else
     result = 0;
 

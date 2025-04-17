@@ -1,7 +1,7 @@
 import React from "react";
 import '../Styles/Title.css';
 
-export default function Title() {
+export default function Title(props) {
   return (
     <div className="title-main-div">
       <div className="title-container">
@@ -10,7 +10,7 @@ export default function Title() {
         <p className="subtitle">InspireHub is your go-to place for support, inspiration, and tools to transform your life.</p>
         <div className="title-buttons">
           <button className="begin-button" onClick={() => window.location = 'dashboard/tasks'}>Begin Your Journey</button>
-          <button className="mission-button">Our Mission</button>
+          <button className="mission-button" onClick={() => window.scrollTo({top: window.innerHeight+450,behavior:'smooth'})}>Our Mission</button>
         </div>
       </div>
     </div>

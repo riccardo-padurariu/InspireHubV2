@@ -29,10 +29,42 @@ export default function Task(props) {
           }
         })
         setIdArr(temporaryArray);
+        console.log(idArr);
       }
     }
 
   React.useEffect(() => {fetchDataDelete()},[props.taskList]);
+
+  
+
+  const date = new Date();
+  console.log(date.getHours() + ":" + date.getMinutes());
+  console.log(typeof props.dueDate);
+  const taskH = Number(props.dueDate.slice(2));
+  const taskM = Number(props.dueDate.slice(-2));
+  if(Number(date.getHours()) > taskH){
+    const arr = props.taskList;
+    arr[props.index-1] = {
+      name: props.taskName,
+      description: props.taskDescription,
+      dueDate: String(props.taskDate),
+      isCompleted: false,
+      status: 0
+    }
+    console.log('changed');
+    console.log(arr[props.index-1])
+  }else if(Number(date.getMinutes()) > taskM){
+    const arr = props.taskList;
+    arr[props.index-1] = {
+      name: props.taskName,
+      description: props.taskDescription,
+      dueDate: String(props.taskDate),
+      isCompleted: false,
+      status: 0
+    }
+    console.log('changed');
+    console.log(arr[props.index-1])
+  }
 
   async function deleteFormDB(taskId){
     const db = getDatabase(app);
@@ -164,22 +196,6 @@ export default function Task(props) {
     gap: '10px',
   }
 
-  const fetchData = async () => {
-    const db = getDatabase(app);
-    const userRef = ref(db, `users/${currentUser.uid}/tasks`);
-    const date = new Date();
-    const newTask = {
-        name: props.taskName,
-        description: props.taskDescription,
-        dueDate: String(props.taskDate),
-        isCompleted: props.isCompleted,
-        id: currentUser.displayName,
-        timestamp: Date.now()
-    };
-    
-    await push(userRef, newTask);
-  }
-
   return (
     <div className="task-main-div">
       <div className="task-container">
@@ -193,7 +209,7 @@ export default function Task(props) {
           <p className="task-attribute task-name" style={{marginLeft: (isExtended ? 0 : 52) + 'px'}}>{isExtended ? `Task name: ${props.name}` : `${props.name}`}</p>
           <p className="task-attribute date" style={{marginLeft: (isExtended ? 0 : 10) + 'px'}}>{isExtended ? `Due hour: ${props.dueDate}` : `${props.dueDate}`}</p>
           {isExtended && <p className="task-attribute">{`Task description: ${props.description}`}</p>}
-          <p className="task-attribute">{isExtended ? `Task status: ${props.isCompleted ? 'Completed' : 'In progress'}` : props.isCompleted ? 'Completed' : 'In progress'}</p>
+          <p className="task-attribute">{isExtended ? `Task status: ${props.isCompleted ? 'Completed' : 'In progress'}` : (props.isCompleted ? 'Completed' : (props.status === 0 ? 'Due' : 'In progress'))}</p>
         </div>
         <div className="user-todolist-buttons" style={isExtended ? styleUserButtonsExtended : styleUserButtonsNormal}>
           <button className="complete-task-button" style={props.isCompleted ? completedStyle : inProgressStyle} onClick={props.isCompleted ? undoTask : completeTask}>{props.isCompleted ? 'Undo' : 'Complete'}</button>

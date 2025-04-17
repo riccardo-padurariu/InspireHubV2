@@ -8,18 +8,15 @@ import AddTaskModal from "../Components/AddTaskModal";
 import AiIntro from "../Components/AiIntro";
 import CommunityInfo from "../Components/CommunityInfos";
 import PostsSection from "../Components/PostsSection";
+import AddPostModal from "../Components/AddPostModal";
 
 export default function CommunityPage(props){
 
-  const [taskList,setTaskList] = React.useState([]);
-  const [isAdding,setIsAdding] = React.useState(false);
-  console.log(taskList);
+  const [postsList,setPostsList] = React.useState([]);
+  const [isAddingPost,setIsAddingPost] = React.useState(false);
 
-  const [taskName,setTaskName] = React.useState('');
-  const [taskDescription,setTaskDescription] = React.useState('');
-  const [taskDate,setTaskDate] = React.useState('');
-  const [isEditing,setIsEditing] = React.useState(false);
-  const [editIndex,setEditIndex] = React.useState(0);
+  const [postName,setPostName] = React.useState('');
+  const [postDescription,setPostDescription] = React.useState('');
   const [pageSelector,setPageSelector] = React.useState({
     home: true,
     challenges: false,
@@ -51,8 +48,23 @@ export default function CommunityPage(props){
       <Sidebar setNeedsOverFlow={props.setNeedsOverFlow} setPageSelector={setPageSelector} pageSelector={pageSelector}/>
       <div className="features-dash" style={{height: window.innerHeight-65 + "px"}}>
         <CommunityInfo />
-        <PostsSection />
+        <PostsSection 
+          isAddingPost={isAddingPost}
+          setIsAddingPost={setIsAddingPost}
+          postsList={postsList}
+          setPostsList={setPostsList}
+        />
       </div>
+      <AddPostModal
+        setIsAddingPost={setIsAddingPost}
+        isAddingPost={isAddingPost}
+        postName={postName}
+        setPostName={setPostName}
+        postDescription={postDescription}
+        setPostDescription={setPostDescription}
+        postList={postsList}
+        setPostsList={setPostsList}
+      />
     </div>
   );
 }

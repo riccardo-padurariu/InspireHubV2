@@ -30,6 +30,7 @@
   border: 1px solid;
   border-color: white;
   border-radius: 300px;
+  color: white;
 }
 
 .search-post-input::placeholder{

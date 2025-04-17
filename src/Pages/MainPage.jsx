@@ -9,6 +9,8 @@ import FeatureHighlights from "../Components/FeatureHighlights";
 import PoweredBy from "../Components/PoweredBy";
 import Footer from "../Components/Footer";
 import { useAuth } from "../Authentification/AuthContext";
+import { useRef } from "react";
+
 
 export default function MainPage(props){
 
@@ -19,11 +21,17 @@ export default function MainPage(props){
   else
     document.body.style.overflow = "hidden";
 
+    const sectionRef = useRef(null);
+    const ScrollToSection = () => {
+        sectionRef.current?.ScrollIntoView({ behavior:  'smooth'});
+    }
+
+
   return (
     <div className="main-page-container">
       <img className="back" src={background}></img>
       <Navbar setNeedsOverflow={props.setNeedsOverflow} />
-      <Title />
+      <Title ScrollIntoView={ScrollToSection}/>
       <Carousel />
       <Reasons />
       <FeatureHighlights />

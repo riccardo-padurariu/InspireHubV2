@@ -1,0 +1,38 @@
+.tag-component-selected{
+  margin: 0;
+  color: black;
+}
+
+.tag-component-normal{
+  margin: 0;
+  color: white;
+}
+
+.tag-component-container-selected{
+  padding: 5px;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.tag-component-container-normal{
+  padding: 5px;
+  background-color: black;
+  border-radius: 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.tags-modal-div{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.tags-sec-div{
+  margin-top: 2px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3px;
+}

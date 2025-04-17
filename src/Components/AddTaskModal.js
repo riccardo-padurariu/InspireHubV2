@@ -10,16 +10,6 @@ import { app } from "../Authentification/Firebase";
 
 export default function AddTaskModal(props) {
 
-  const date = new Date();
-  console.log(date.getHours() + ":" + date.getMinutes());
-  const taskH = Number(props.dueDate.substring(0,2));
-  const taskM = Number(props.dueDate.slice(-2));
-  if(Number(date.getHours()) > taskH){
-    
-  }else if(Number(date.getMinutes()) > taskM){
-    
-  }
-
   const { currentUser } = useAuth();
 
   const [idArr,setIdArr] = React.useState([]);
@@ -78,7 +68,8 @@ export default function AddTaskModal(props) {
             description: props.taskDescription,
             dueDate: String(props.taskDate),
             isCompleted: false,
-            id: currentUser.displayName
+            id: currentUser.displayName,
+            status: 1
         }
     ]);
 
@@ -123,7 +114,8 @@ export default function AddTaskModal(props) {
       name: props.taskName,
       description: props.taskDescription,
       dueDate: String(props.taskDate),
-      isCompleted: false
+      isCompleted: false,
+      status: 1
     }
 
     const db = getDatabase(app);
@@ -135,14 +127,12 @@ export default function AddTaskModal(props) {
         dueDate: String(props.taskDate),
         isCompleted: false,
         id: currentUser.displayName,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        status: 1
     };
     
     set(userRef, newTask);
     
-
-    //fetchDataEdit();
-
     props.setIsAdding(false);
   }
 

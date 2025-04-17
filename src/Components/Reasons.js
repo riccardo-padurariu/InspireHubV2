@@ -6,7 +6,7 @@ import div3 from '../Assets/Vector (4).png';
 
 export default function Reasons(){
   return (
-    <div className="reasons-main-div">
+    <div id="ourmission" className="reasons-main-div">
       <div className="reasons-container">
         <div className="why-inspire-hub">WHY INSPIREHUB?</div>
         <p className="main-reason">Simple,effective, and inspiring.</p>

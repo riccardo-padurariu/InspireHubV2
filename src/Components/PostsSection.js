@@ -2,8 +2,53 @@ import React from "react";
 import '../Styles/PostsSection.css';
 import search from '../Assets/Search-icon.svg';
 import Post from "./Post";
+import { useAuth } from "../Authentification/AuthContext";
+import { Database, getDatabase, onValue } from "firebase/database";
+import { ref,get,push,set } from "firebase/database";
+import ProgressBar from "./ProgressBar";
+import { app } from "../Authentification/Firebase";
 
-export default function PostsSection(){
+export default function PostsSection(props){
+
+  const { currentUser } = useAuth();
+
+  const arr = props.postsList;
+  const displayArr = arr.map((item) => 
+    <Post 
+      name={item.postName}
+      description={item.postDescription}
+      tags={item.tags}
+      likes={item.likes}
+      dislikes={item.dislikes}
+      user={item.user}
+    />
+  )
+
+  React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const userTasksRef = ref(db, `posts`);
+
+    const unsubscribe = onValue(userTasksRef, (snapshot) => {
+      if(snapshot.exists()){
+        const taskData = snapshot.val();
+
+        const tasksArray = Object.entries(taskData).map(([key,value]) => ({
+          ...value,
+          firebaseKey: key
+        }))
+
+        props.setPostsList(tasksArray);
+      }else{
+        props.setPostsList([]);
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
 
 
   window.addEventListener('resize', function() {
@@ -19,7 +64,7 @@ export default function PostsSection(){
             <img src={search}></img>
           </button>
         </div>
-        <button className="create-post-button">Create A Post</button>
+        <button className="create-post-button" onClick={() => {props.setIsAddingPost(true)}}>Create A Post</button>
       </div>
       <div className="tags-container">
         <div className="tag">
@@ -42,7 +87,7 @@ export default function PostsSection(){
         </div>
       </div>
       <div className="posts-container">
-        <Post />
+        {displayArr}
       </div>
     </div>
   );
