@@ -30,7 +30,13 @@ export default function AddPostModal(props) {
     const newPost = {
       postName: props.postName,
       postDescription: props.postDescription,
-      tags: [],
+      tags: {
+        ai: ai,
+        productivity: productivity,
+        mentalHealth: mentalHealth,
+        learning: learning,
+        fitness: fitness
+      },
       likes: 0,
       dislikes: 0,
       user: currentUser.displayName
@@ -44,7 +50,13 @@ export default function AddPostModal(props) {
         {
             postName: props.postName,
             postDescription: props.postDescription,
-            tags: [],
+            tags: {
+              ai: ai,
+              productivity: productivity,
+              mentalHealth: mentalHealth,
+              learning: learning,
+              fitness: fitness
+            },
             likes: 0,
             dislikes: 0,
             user: currentUser.displayName
@@ -92,22 +104,22 @@ export default function AddPostModal(props) {
 
   return (
     <div className="add-task-div" style={props.isAddingPost ? styleOnAdding : styleOnNormal}>
-      <div className="add-task-modal-container">
+      <div className="add-task-modal-container" style={{width: '1000px'}}>
         <div className="title-exit-button">
           <p className="add-task-title">Share your ideas with our community!</p>
           <button className="exit-button" onClick={() => {props.setIsAddingPost(false)}}>
             <img className="cross-img" src={cross}></img>
           </button>
         </div>
-        <div className="info-img-div">
+        <div className="info-img-div" style={{marginLeft: '30px'}}>
           <div className="infos">
             <div className="add-task-input-div">
               <p className="label-add-task">Post title</p>
-              <input className="input-add-task name-modal" type="text" placeholder="Set your post title" onChange={(e) => props.setPostName(e.target.value)}></input>
+              <input style={{width: '500px'}} className="input-add-task name-modal" type="text" placeholder="Set your post title" onChange={(e) => props.setPostName(e.target.value)}></input>
             </div>
             <div className="add-task-input-div">
               <p className="label-add-task">Post content</p>
-              <textarea rows="4" cols="10" style={{wordWrap: 'break-word',resize: 'none'}} className="input-add-task-description desc" type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
+              <textarea rows="6" style={{wordWrap: 'break-word',resize: 'none',width: '510px'}} className="input-add-task-description desc" type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
             </div>
             <p className="label-add-task">Add tags</p>
             <div className="tags-modal-div">
@@ -115,8 +127,6 @@ export default function AddPostModal(props) {
                 <Tag set={setAi} name="AI" status= {ai ? "selected" : "normal"} />
                 <Tag set={setProductivity} name="Productivity" status= {productivity ? "selected" : "normal"} />
                 <Tag set={setMentalHealth} name="Mental Health" status= {mentalHealth ? "selected" : "normal"} />
-              </div>
-              <div className="tags-sec-div">
                 <Tag set={setLearning} name="Learning" status= {learning ? "selected" : "normal"} />
                 <Tag set={setFitness} name="Fitness" status= {fitness ? "selected" : "normal"} />
               </div>

@@ -7,12 +7,8 @@ import up from '../Assets/up.svg';
 
 export default function Post(props){
 
-  /*const arr = props.tags;
-  const dArr = arr.map(item => 
-    <div className="tag">
-      {item}
-    </div>
-  );*/
+  const tags = props.tags || {};
+  //console.log(arr);
 
   return (
     <div className="post-container">
@@ -24,7 +20,6 @@ export default function Post(props){
           <div>
             <div className="main-post-info">
               <p className="post-title">{props.name}</p>
-              <p className="post-description">{props.description}</p>
             </div>
             <p className="user-poster">Posted by: {props.user}</p>
           </div>
@@ -32,7 +27,11 @@ export default function Post(props){
         <img src={line}></img>
         <div className="tags">
           <p className="tags-post-title">Tags: </p>
-          {/*dArr*/}
+          {tags.ai && <div className="tag">AI</div>}
+          {tags.productivity && <div className="tag">Productivity</div>}
+          {tags.mentalHealth && <div className="tag">Mental Health</div>}
+          {tags.learning && <div className="tag">Learning</div>}
+          {tags.fitness && <div className="tag">Fitness</div>}
         </div>
       </div>
       <div className="ranking-post">
