@@ -12,48 +12,6 @@ export default function PostsSection(props){
 
   const { currentUser } = useAuth();
 
-  const [filter,setFilter] = React.useState({
-    all: true,
-    ai: false,
-    productivity: false,
-    mentalHealth: false,
-    learning: false,
-    fitness: false
-  });
-
-  const arr = props.postsList;
-  console.log('array post list');
-  console.log(arr);
-
-  function filterTag(tag){
-    if(filter.ai){
-      return tag.tags.ai;
-    }else if(filter.fitness){
-      return tag.tags.fitness;
-    }else if(filter.learning){
-      return tag.tags.learning;
-    }else if(filter.mentalHealth){
-      return tag.tags.mentalHealth;
-    }else if(filter.productivity){
-      return tag.tags.productivity;
-    }
-    return true;
-  }
-
-  const filtArr = arr.filter(filterTag);
-
-
-  const displayArr = filtArr.map((item) => 
-    <Post 
-      name={item.postName}
-      description={item.postDescription}
-      tags={item.tags}
-      likes={item.likes}
-      dislikes={item.dislikes}
-      user={item.user}
-    />
-  )                
-
   React.useEffect(() => {
     if(!currentUser) return;
 
@@ -81,6 +39,56 @@ export default function PostsSection(props){
   }, [currentUser]);
 
 
+  const [filter,setFilter] = React.useState({
+    all: true,
+    ai: false,
+    productivity: false,
+    mentalHealth: false,
+    learning: false,
+    fitness: false,
+    moreTags: false
+  });
+
+  const arr = props.postsList;
+
+  function filterTag(tag){
+    if(filter.ai){
+      return tag.tags.ai;
+    }else if(filter.fitness){
+      return tag.tags.fitness;
+    }else if(filter.learning){
+      return tag.tags.learning;
+    }else if(filter.mentalHealth){
+      return tag.tags.mentalHealth;
+    }else if(filter.productivity){
+      return tag.tags.productivity;
+    }else if(filter.all){
+      return true;
+    }
+  }
+
+  const filtArr = arr.filter(filterTag);
+
+
+  const displayArr = filtArr.map((item,index) => 
+    <Post 
+      name={item.postName}
+      description={item.postDescription}
+      tags={item.tags}
+      likes={item.likes}
+      dislikes={item.dislikes}
+      user={item.user}
+      postKey={item.firebaseKey}
+    />
+  )                
+
+  function handleCreatePost() {
+    props.setPostName('');
+    props.setPostDescription('');
+    props.setIsAddingPost(true);
+  }
+
+
   window.addEventListener('resize', function() {
     document.querySelector('.post-section-container').style.height = window.innerHeight-305 + "px";
   });
@@ -94,7 +102,7 @@ export default function PostsSection(props){
             <img src={search}></img>
           </button>
         </div>
-        <button className="create-post-button" onClick={() => {props.setIsAddingPost(true)}}>Create A Post</button>
+        <button className="create-post-button" onClick={handleCreatePost}>Create A Post</button>
       </div>
       <div className="tags-container">
         <div onClick={() => setFilter({
@@ -103,7 +111,8 @@ export default function PostsSection(props){
           productivity: false,
           mentalHealth: false,
           learning: false,
-          fitness: false
+          fitness: false,
+          moreTags: false
         })} className={`tag ${filter.all ? 'selected' : ''}`}>
           All tags
         </div>
@@ -113,7 +122,8 @@ export default function PostsSection(props){
           productivity: false,
           mentalHealth: false,
           learning: false,
-          fitness: false
+          fitness: false,
+          moreTags: false
         })} className={`tag ${filter.ai ? 'selected' : ''}`}>
           AI
         </div>
@@ -123,7 +133,8 @@ export default function PostsSection(props){
           productivity: true,
           mentalHealth: false,
           learning: false,
-          fitness: false
+          fitness: false,
+          moreTags: false
         })} className={`tag ${filter.productivity ? 'selected' : ''}`}>
           Productivity
         </div>
@@ -133,7 +144,8 @@ export default function PostsSection(props){
           productivity: false,
           mentalHealth: true,
           learning: false,
-          fitness: false
+          fitness: false,
+          moreTags: false
         })} className={`tag ${filter.mentalHealth ? 'selected' : ''}`}>
           Mental Health
         </div>
@@ -143,7 +155,8 @@ export default function PostsSection(props){
           productivity: false,
           mentalHealth: false,
           learning: true,
-          fitness: false
+          fitness: false,
+          moreTags: false
         })} className={`tag ${filter.learning ? 'selected' : ''}`}>
           Learning
         </div>
@@ -153,11 +166,20 @@ export default function PostsSection(props){
           productivity: false,
           mentalHealth: false,
           learning: false,
-          fitness: true
+          fitness: true,
+          moreTags: false
         })} className={`tag ${filter.fitness ? 'selected' : ''}`}>
           Fitness
         </div>
-        <div className="tag">
+        <div onClick={() => setFilter({
+          all: false,
+          ai: false,
+          productivity: false,
+          mentalHealth: false,
+          learning: false,
+          fitness: false,
+          moreTags: true
+        })} className={`tag ${filter.moreTags ? 'selected' : ''}`}>
           More Tags
         </div>
       </div>

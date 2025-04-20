@@ -9,14 +9,21 @@ import AiIntro from "../Components/AiIntro";
 import CommunityInfo from "../Components/CommunityInfos";
 import PostsSection from "../Components/PostsSection";
 import AddPostModal from "../Components/AddPostModal";
+import { app } from "../Authentification/Firebase";
+import { getDatabase,ref,get } from "firebase/database";
 
 export default function CommunityPage(props){
 
   const [postsList,setPostsList] = React.useState([]);
   const [isAddingPost,setIsAddingPost] = React.useState(false);
 
+  const [likes,setLikes] = React.useState([]);
+  const [dislikes,setDislikes] = React.useState([]);
+
+
   const [postName,setPostName] = React.useState('');
   const [postDescription,setPostDescription] = React.useState('');
+  const [postMoreTags,setPostMoreTags] = React.useState('');
   const [pageSelector,setPageSelector] = React.useState({
     home: true,
     challenges: false,
@@ -53,6 +60,14 @@ export default function CommunityPage(props){
           setIsAddingPost={setIsAddingPost}
           postsList={postsList}
           setPostsList={setPostsList}
+          setPostName={setPostName}
+          setPostDescription={setPostDescription}
+          postMoreTags={postMoreTags}
+          setPostMoreTags={setPostMoreTags}
+          likes={likes}
+          dislikes={dislikes}
+          setLikes={setLikes}
+          setDislikes={setDislikes}
         />
       </div>
       <AddPostModal
@@ -64,6 +79,12 @@ export default function CommunityPage(props){
         setPostDescription={setPostDescription}
         postList={postsList}
         setPostsList={setPostsList}
+        postMoreTags={postMoreTags}
+        setPostMoreTags={setPostMoreTags}
+        likes={likes}
+        dislikes={dislikes}
+        setLikes={setLikes}
+        setDislikes={setDislikes}
       />
     </div>
   );

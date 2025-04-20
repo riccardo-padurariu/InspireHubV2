@@ -3,7 +3,7 @@ import '../Styles/AddTaskModal.css';
 import cross from '../Assets/material-symbols_close-rounded.svg';
 import backImg from '../Assets/Saly-26.svg';
 import { useAuth } from "../Authentification/AuthContext";
-import { Database, getDatabase } from "firebase/database";
+import { Database, getDatabase, set } from "firebase/database";
 import { ref,get } from "firebase/database";
 import img from '../Assets/1 1.svg';
 import filled from '../Assets/star-filled.svg';
@@ -11,6 +11,8 @@ import empty from '../Assets/star-empty.svg';
 import Tag from "./Tag";
 import { app } from "../Authentification/Firebase";
 import { push } from "firebase/database";
+import arrow from '../Assets/line-md_arrow-down.png';
+
 
 export default function AddPostModal(props) {
 
@@ -21,6 +23,7 @@ export default function AddPostModal(props) {
   const [mentalHealth,setMentalHealth] = React.useState(false);
   const [learning,setLearning] = React.useState(false);
   const [fitness,setFitness] = React.useState(false);
+  const [moreTags,setMoreTags] = React.useState(false);
 
   const [idArr,setIdArr] = React.useState([]);
 
@@ -67,9 +70,15 @@ export default function AddPostModal(props) {
         console.error("Error saving task to Firebase:", error);
     });
 
-    props.setIsAddingPost(false);
     props.setPostName('');
     props.setPostDescription('');
+    props.setIsAddingPost(false);
+    setAi(false);
+    setProductivity(false);
+    setMentalHealth(false);
+    setLearning(false);
+    setFitness(false);
+    setMoreTags(false);
   }
   
 
@@ -102,6 +111,8 @@ export default function AddPostModal(props) {
     justifyContent: 'center'
   }
 
+  console.log(props.postMoreTags);
+
   return (
     <div className="add-task-div" style={props.isAddingPost ? styleOnAdding : styleOnNormal}>
       <div className="add-task-modal-container" style={{width: '1000px'}}>
@@ -115,11 +126,11 @@ export default function AddPostModal(props) {
           <div className="infos">
             <div className="add-task-input-div">
               <p className="label-add-task">Post title</p>
-              <input style={{width: '500px'}} className="input-add-task name-modal" type="text" placeholder="Set your post title" onChange={(e) => props.setPostName(e.target.value)}></input>
+              <input style={{width: '500px'}} className="input-add-task name-modal" type="text" placeholder="Set your post title" value={props.postName} onChange={(e) => props.setPostName(e.target.value)}></input>
             </div>
             <div className="add-task-input-div">
               <p className="label-add-task">Post content</p>
-              <textarea rows="6" style={{wordWrap: 'break-word',resize: 'none',width: '510px'}} className="input-add-task-description desc" type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
+              <textarea rows="6" style={{wordWrap: 'break-word',resize: 'none',width: '510px'}} className="input-add-task-description desc" value={props.postDescription} type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
             </div>
             <p className="label-add-task">Add tags</p>
             <div className="tags-modal-div">
@@ -129,6 +140,12 @@ export default function AddPostModal(props) {
                 <Tag set={setMentalHealth} name="Mental Health" status= {mentalHealth ? "selected" : "normal"} />
                 <Tag set={setLearning} name="Learning" status= {learning ? "selected" : "normal"} />
                 <Tag set={setFitness} name="Fitness" status= {fitness ? "selected" : "normal"} />
+                {!moreTags && <Tag set={setMoreTags} name="Another" status= {moreTags ? "selected" : "normal"}/>}
+                {moreTags && 
+                <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
+                  <input value={props.postMoreTags} onChange={(e) => props.setPostMoreTags(e.target.value)} className="input-more-tags" placeholder="Enter tag name" type="text"></input>
+                  <div onClick={() => setMoreTags(false)} style={{cursor:'pointer',background: 'black', borderRadius: '50%',padding: '6px 6px 4px 6px',marginLeft: '3px'}}><img src={arrow}></img></div>
+                </div>}
               </div>
             </div>
             <button className="add-task-modal-button" style={{fontSize: '11px',marginTop: '10px'}} onClick={addTask}>CREATE POST</button>

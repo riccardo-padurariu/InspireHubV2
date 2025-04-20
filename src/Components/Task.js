@@ -38,8 +38,6 @@ export default function Task(props) {
   
 
   const date = new Date();
-  console.log(date.getHours() + ":" + date.getMinutes());
-  console.log(typeof props.dueDate);
   const taskH = Number(props.dueDate.slice(2));
   const taskM = Number(props.dueDate.slice(-2));
   if(Number(date.getHours()) > taskH){
@@ -51,8 +49,6 @@ export default function Task(props) {
       isCompleted: false,
       status: 0
     }
-    console.log('changed');
-    console.log(arr[props.index-1])
   }else if(Number(date.getMinutes()) > taskM){
     const arr = props.taskList;
     arr[props.index-1] = {
@@ -62,8 +58,6 @@ export default function Task(props) {
       isCompleted: false,
       status: 0
     }
-    console.log('changed');
-    console.log(arr[props.index-1])
   }
 
   async function deleteFormDB(taskId){
@@ -83,7 +77,6 @@ export default function Task(props) {
     fetchDataDelete();
 
     deleteFormDB(taskId);
-    //window.location.reload();
   }
 
   function editTask(){
@@ -162,7 +155,6 @@ export default function Task(props) {
     const arrC = props.completedList;
     const newArrC = arrC.filter((item,index) => item !== props.index-1)
     props.setCompletedList(newArrC);
-    //updateCompletationStatus(false);
   }
 
   const styleInfosNormal = {

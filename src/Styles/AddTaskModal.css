@@ -11,6 +11,17 @@
   justify-content: center;
 }*/
 
+.input-more-tags{
+  font-family: Outfit;
+  color: black;
+  padding: 0px 10px;
+  border-radius: 10px;
+  height: 30px;
+  font-size: 14px;
+  width: 100px;
+  border: none;
+}
+
 .add-task-modal-container{
   width: 600px;
   height: 515px;
