@@ -1,0 +1,108 @@
+.post-main-section-container{
+  position: relative;
+  margin-top: 18px;
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: #BE3144;
+  padding: 8px 26px;
+  backdrop-filter: blur(20px);
+}
+
+.general-infos{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-post-stats{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-post-infos{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+}
+
+.main-post-infos .infos{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.pfp-main-post{
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: #BE3144;
+  padding: 20px 50px;
+  background-color: #09122C;
+}
+
+.stats-main-p{
+  color: white;
+  font-size: 30px;
+  margin: 0;
+  margin: 0px 10px;
+}
+
+.post-main-comments,
+.post-main-description{
+  margin-bottom: 7px;
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: #BE3144;
+  padding: 10px 25px;
+  background-color: #09122C;
+}
+
+.post-main-description-p{
+  margin: 0;
+  color: white;
+}
+
+.post-main-comments-p{
+  color: white;
+  font-size: 22px;
+  margin: 0;
+}
+
+.add-comment-button{
+  font-family: Outfit;
+  font-size: 16px;
+  color: #BE3144;
+  background-color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.input-comment{
+  padding: 10px 0 0 10px;
+  font-family: Outfit;
+  border-radius: 10px;
+  border: none;
+}
+
+.input-comment::placeholder{
+  font-family: Outfit;
+  font-size: 14px;
+}
+
+.post-comment-button{
+  font-family: Outfit;
+  color: #BE3144;
+  background-color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  height: 30px;
+  margin-left: 20px;
+  cursor: pointer;
+}

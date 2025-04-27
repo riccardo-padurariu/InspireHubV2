@@ -21,6 +21,7 @@ export default function ToDoListPage(props) {
   const [taskName,setTaskName] = React.useState('');
   const [taskDescription,setTaskDescription] = React.useState('');
   const [taskDate,setTaskDate] = React.useState('');
+  const [target,setTarget] = React.useState(0);
   const [isEditing,setIsEditing] = React.useState(false);
   const [editIndex,setEditIndex] = React.useState(0);
   const [pageSelector,setPageSelector] = React.useState({
@@ -63,6 +64,8 @@ export default function ToDoListPage(props) {
           setEditIndex={setEditIndex}
           h1 = {h1}
           editIndex={editIndex}
+          target={target}
+          setTarget={setTarget}
          />
       </div>
       <AddTaskModal
@@ -78,6 +81,8 @@ export default function ToDoListPage(props) {
         taskDate={taskDate}
         isEditing={isEditing}
         editIndex={editIndex}
+        target={target}
+        setTarget={setTarget}
       />
     </div>
   );

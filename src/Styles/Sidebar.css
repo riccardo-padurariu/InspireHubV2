@@ -12,6 +12,7 @@
 
 .features-dash{
   width: 100%;
+  overflow: auto;
 }
 
 .coming-soon{
@@ -110,6 +111,10 @@
   cursor: pointer;
 }*/
 
+.section-dash{
+  width: 211px;
+}
+
 /*.section-p{
   color: #737373;
   font-size: 17px;
@@ -133,3 +138,45 @@
   background: linear-gradient(90deg, #244CA2 0%, #872341 75%);
 }
 
+
+@media screen and (max-width: 1122px) {
+  .infos{
+    display: none;
+  }
+
+  .section-p{
+    display: none;
+  }
+
+  .copyright-dash{
+    display: none;
+  }
+  
+  .sidebar{
+    width: 50px;
+  }
+
+  .line-sidebar{
+    display: none;
+  }
+
+  .section-dash-ai,
+  .section-dash{
+    width: 20px;
+  }
+
+  .pfp{
+    width: 62px;
+    padding: 10px;
+  }
+
+  .pfp-img{
+    width: 35px;
+    margin-left: 12px;
+  }
+
+  .logo-dash{
+    rotate: 135deg;
+    margin-left: 20px;
+  }
+}

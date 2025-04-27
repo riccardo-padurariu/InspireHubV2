@@ -23,13 +23,14 @@ export default function AddPostModal(props) {
   const [mentalHealth,setMentalHealth] = React.useState(false);
   const [learning,setLearning] = React.useState(false);
   const [fitness,setFitness] = React.useState(false);
-  const [moreTags,setMoreTags] = React.useState(false);
+  const [tag,setTag] = React.useState('');
 
   const [idArr,setIdArr] = React.useState([]);
 
   const fetchData = async () => {
     const db = getDatabase(app);
     const userRef = ref(db, `posts`);
+
     const newPost = {
       postName: props.postName,
       postDescription: props.postDescription,
@@ -38,14 +39,26 @@ export default function AddPostModal(props) {
         productivity: productivity,
         mentalHealth: mentalHealth,
         learning: learning,
-        fitness: fitness
+        fitness: fitness,
+        moreTags: props.postMoreTags
       },
       likes: 0,
       dislikes: 0,
       user: currentUser.displayName
     };
     
-    await push(userRef, newPost);
+    /*try{
+      await set(userRef,newPost);
+
+      const userPost = ref(db,`users/${currentUser.uid}/appreciatedPosts/${postFirebaseKey}`);
+      await set(userPost,{liked: false,disliked: true});
+    }catch (error) {
+      console.log(error);
+    }*/
+
+      await push(userRef,newPost);
+      const postFirebaseKey = userRef;
+      console.log(postFirebaseKey);
   }
 
   function addTask(){
@@ -70,6 +83,14 @@ export default function AddPostModal(props) {
         console.error("Error saving task to Firebase:", error);
     });
 
+    /*const fetchUserPost = async () => {
+      const db = getDatabase();
+      const userPostsRef = ref(db,`users/${currentUser.uid}/appreciatedPosts/`);
+      await push(userPostsRef,{postId:element.firebaseKey,liked:false,disliked:false});
+    }
+
+    fetchUserPost();*/
+
     props.setPostName('');
     props.setPostDescription('');
     props.setIsAddingPost(false);
@@ -78,7 +99,7 @@ export default function AddPostModal(props) {
     setMentalHealth(false);
     setLearning(false);
     setFitness(false);
-    setMoreTags(false);
+    props.setMoreTags(false);
   }
   
 
@@ -117,8 +138,8 @@ export default function AddPostModal(props) {
     <div className="add-task-div" style={props.isAddingPost ? styleOnAdding : styleOnNormal}>
       <div className="add-task-modal-container" style={{width: '1000px'}}>
         <div className="title-exit-button">
-          <p className="add-task-title">Share your ideas with our community!</p>
-          <button className="exit-button" onClick={() => {props.setIsAddingPost(false)}}>
+          <p className="add-task-title">'Share your ideas with our community!</p>
+          <button className="exit-button" onClick={() => {props.setPostMoreTags('');props.setIsAddingPost(false)}}>
             <img className="cross-img" src={cross}></img>
           </button>
         </div>
@@ -133,18 +154,19 @@ export default function AddPostModal(props) {
               <textarea rows="6" style={{wordWrap: 'break-word',resize: 'none',width: '510px'}} className="input-add-task-description desc" value={props.postDescription} type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
             </div>
             <p className="label-add-task">Add tags</p>
-            <div className="tags-modal-div">
-              <div className="tags-sec-div">
+            <div className="tags-modal-div" style={{width: '610px'}}>
+              <div className="tags-sec-div" style={{width: '650px'}}>
                 <Tag set={setAi} name="AI" status= {ai ? "selected" : "normal"} />
                 <Tag set={setProductivity} name="Productivity" status= {productivity ? "selected" : "normal"} />
                 <Tag set={setMentalHealth} name="Mental Health" status= {mentalHealth ? "selected" : "normal"} />
                 <Tag set={setLearning} name="Learning" status= {learning ? "selected" : "normal"} />
                 <Tag set={setFitness} name="Fitness" status= {fitness ? "selected" : "normal"} />
-                {!moreTags && <Tag set={setMoreTags} name="Another" status= {moreTags ? "selected" : "normal"}/>}
-                {moreTags && 
+                {!props.moreTags && <Tag set={props.setMoreTags} name={props.postMoreTags==='' ? "Another" : props.postMoreTags} status= {props.postMoreTags!=='' ? "selected" : "normal"}/>}
+                {props.moreTags && 
                 <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
                   <input value={props.postMoreTags} onChange={(e) => props.setPostMoreTags(e.target.value)} className="input-more-tags" placeholder="Enter tag name" type="text"></input>
-                  <div onClick={() => setMoreTags(false)} style={{cursor:'pointer',background: 'black', borderRadius: '50%',padding: '6px 6px 4px 6px',marginLeft: '3px'}}><img src={arrow}></img></div>
+                  <div onClick={() => {props.setPostMoreTags('');props.setMoreTags(false)}} style={{cursor:'pointer',background: 'black', borderRadius: '50%',padding: '8px 8px 4px 8px',marginLeft: '3px'}}><img src={arrow}></img></div>
+                  <button className="add-tag-button" onClick={() => props.setMoreTags(false)}> Add tag</button>
                 </div>}
               </div>
             </div>

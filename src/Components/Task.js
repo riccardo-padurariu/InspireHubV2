@@ -138,6 +138,28 @@ export default function Task(props) {
     }
   }
 
+  async function updateCurrentTarget(amount){
+
+    if(!currentUser){
+      console.error('User not found!');
+      return;
+    }
+    if(!props.firebaseKey){
+      console.error('Key not found!');
+      return;
+    }
+
+    const db = getDatabase(app);
+    const taskRef = ref(db,`users/${currentUser.uid}/tasks/${props.firebaseKey}`);
+
+    try{
+      await update(taskRef,{currentTarget: amount});
+      //alert('Updated');
+    }catch(error){
+      console.log('Error updating current target: ',error);
+    }
+  }
+
 
   function completeTask() {
     updateCompletationStatus(true);
@@ -178,7 +200,11 @@ export default function Task(props) {
     gap: '5px'
   }
 
-  const styleUserButtonsNormal = {};
+  const styleUserButtonsNormal = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  };
 
   const styleUserButtonsExtended = {
     display: 'flex',
@@ -186,6 +212,29 @@ export default function Task(props) {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '10px',
+  }
+
+  function check(){
+    if(props.isTarget){
+      if(props.currentTarget === props.description){
+        updateCompletationStatus(true);
+        const arr = props.taskList;
+        arr[props.index-1].isCompleted = true;
+        props.setCompletedList(prevList => [...prevList,
+          props.index-1, 
+        ]);
+        //alert('completed');
+      }else{
+        updateCompletationStatus(false);
+        const arr = props.taskList;
+        arr[props.index-1].isCompleted = false;
+        const arrC = props.completedList;
+        const newArrC = arrC.filter((item,index) => item !== props.index-1)
+        props.setCompletedList(newArrC);
+        //alert('uncompleted');
+      }
+    }
+    console.log(props.currentTarget);
   }
 
   return (
@@ -200,11 +249,17 @@ export default function Task(props) {
           <p className="task-attribute">{isExtended ? `Nr task: ${props.index}` : `${props.index}`}</p>
           <p className="task-attribute task-name" style={{marginLeft: (isExtended ? 0 : 52) + 'px'}}>{isExtended ? `Task name: ${props.name}` : `${props.name}`}</p>
           <p className="task-attribute date" style={{marginLeft: (isExtended ? 0 : 10) + 'px'}}>{isExtended ? `Due hour: ${props.dueDate}` : `${props.dueDate}`}</p>
-          {isExtended && <p className="task-attribute">{`Task description: ${props.description}`}</p>}
-          <p className="task-attribute">{isExtended ? `Task status: ${props.isCompleted ? 'Completed' : 'In progress'}` : (props.isCompleted ? 'Completed' : (props.status === 0 ? 'Due' : 'In progress'))}</p>
+          {isExtended && !props.isTarget && <p className="task-attribute">{`Task description: ${props.description}`}</p>}
+          {isExtended && props.isTarget && <p className="task-attribute">{`Task target: ${props.description}`}</p>}
+          {props.isTarget ? <p className={props.currentTarget === props.description ? "target-task-completed" : "target-task"}>{props.currentTarget}/{props.description}</p>  : <p className="task-attribute">{isExtended ? `Task status: ${props.isCompleted ? 'Completed' : 'In progress'}` : (props.isCompleted ? 'Completed' : (props.status === 0 ? 'Due' : 'In progress'))}</p>}
         </div>
         <div className="user-todolist-buttons" style={isExtended ? styleUserButtonsExtended : styleUserButtonsNormal}>
-          <button className="complete-task-button" style={props.isCompleted ? completedStyle : inProgressStyle} onClick={props.isCompleted ? undoTask : completeTask}>{props.isCompleted ? 'Undo' : 'Complete'}</button>
+          {props.isTarget
+          ? <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
+              <button className="manage-target-task" onClick={() => {updateCurrentTarget(props.currentTarget > 0 ? props.currentTarget-1 : props.currentTarget);check()}}>-</button>
+              <button className="manage-target-task" onClick={() => {updateCurrentTarget(props.currentTarget < props.description ? props.currentTarget+1 : props.currentTarget);check()}}>+</button>
+            </div>
+          : <button className="complete-task-button" style={props.isCompleted ? completedStyle : inProgressStyle} onClick={props.isCompleted ? undoTask : completeTask}>{props.isCompleted ? 'Undo' : 'Complete'}</button>}
           <button className="edit-button" onClick={editTask}>Edit</button>
           <button className="delete-button" style={{marginRight: '3px'}} onClick={() => deleteTask(idArr[props.index-1].id)}>Delete</button>
         </div>

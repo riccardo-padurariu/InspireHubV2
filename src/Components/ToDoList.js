@@ -67,7 +67,11 @@ export default function ToDoList(props) {
     setCompletedList={setCompletedList}
     firebaseKey={item.firebaseKey}
     status={item.status}
-   />
+    target={props.target}
+    setTarget={props.setTarget}
+    currentTarget={item.currentTarget}
+    isTarget={item.isTarget}
+    />
   );
 
   function setUpToAdd(){

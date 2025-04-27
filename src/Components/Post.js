@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import '../Styles/Post.css';
 import img from '../Assets/Image.svg';
 import line from '../Assets/Line 4.svg';
@@ -8,26 +8,65 @@ import { app } from "../Authentification/Firebase";
 import { getDatabase } from "firebase/database";
 import { update } from "firebase/database";
 import { ref } from "firebase/database";
+import { useAuth } from "../Authentification/AuthContext";
+import { push } from "firebase/database";
+import { onValue } from "firebase/database";
+import { set } from "firebase/database";
+import pfp from '../Assets/User.svg';
 
 export default function Post(props){
+
+  const { currentUser } = useAuth();
+
+  const [dbObject,setDbObject] = React.useState([]);
 
   const [liked,setLiked] = React.useState(false);
   const [disliked,setDisliked] = React.useState(false);
 
+  /*React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const userTasksRef = ref(db, `users/${currentUser.uid}/appreciatedPosts/${props.postKey}/`);
+
+    const unsubscribe = onValue(userTasksRef, (snapshot) => {
+      if(snapshot.exists()){
+        const dbObjData = snapshot.val();
+        console.log(dbObjData);
+        const finalObj = Object.entries(dbObjData);
+
+        setDbObject(finalObj);
+      }else{
+        setDbObject({});
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);*/
+
+  console.log(dbObject[0]);
+  console.log(typeof dbObject[0]);
+
   const tags = props.tags || {};
   
   function hasNoTags(){
-    return !tags.ai && !tags.productivity && !tags.mentalHealth && !tags.learning && !tags.fitness;
+    return !tags.ai && !tags.productivity && !tags.mentalHealth && !tags.learning && !tags.fitness && (!tags.moreTags || tags.moreTags === '');
   }
 
   async function updateUserInteraction(amount,type){
 
     const db = getDatabase(app);
-    const taskRef = ref(db, `posts/${props.postKey}`);
+    const postRef = ref(db, `posts/${props.postKey}`);
+    const userRef = ref(db,`users/${currentUser.uid}/appreciatedPosts/${props.postKey}`);
 
     try{
       const obj = type === 'likes' ? {likes:amount} : {dislikes:amount};
-      await update(taskRef,obj);
+      const app = {liked: liked,disliked: disliked};
+      console.log()
+      await set(userRef,app);
+      await update(postRef,obj);
       //alert('Updated');
     }catch(error){
       console.log('Error updating status: ',error);
@@ -36,29 +75,29 @@ export default function Post(props){
 
   function like(){
     if(!liked){
-      updateUserInteraction(props.likes+1,'likes');
       setLiked(true);
+      updateUserInteraction(props.likes+1,'likes');
       if(disliked){
-        updateUserInteraction(props.dislikes-1,'dislikes');
         setDisliked(false);
+        updateUserInteraction(props.dislikes-1,'dislikes');
       }
     }else {
-      updateUserInteraction(props.likes-1,'likes');
       setLiked(false);
+      updateUserInteraction(props.likes-1,'likes');
     }
   }
 
   function dislike(){
     if(!disliked){
-      updateUserInteraction(props.dislikes+1,'dislikes');
       setDisliked(true);
+      updateUserInteraction(props.dislikes+1,'dislikes');
       if(liked){
-        updateUserInteraction(props.likes-1,'likes');
         setLiked(false);
+        updateUserInteraction(props.likes-1,'likes');
       }
     }else{
-      updateUserInteraction(props.dislikes-1,'dislikes');
       setDisliked(false);
+      updateUserInteraction(props.dislikes-1,'dislikes');
     }
   }
 
@@ -67,11 +106,11 @@ export default function Post(props){
       <div className="post-content">
         <div className="post-info">
           <div className="pfp-post">
-            <img src={img}></img>
+            <img src={pfp} style={{width: '36px'}}></img>
           </div>
           <div>
             <div className="main-post-info">
-              <p className="post-title">{props.name}</p>
+              <p style={{cursor: 'pointer'}} className="post-title" onClick={() => window.location = `/dashboard/community/${props.postKey}`}>{props.name}</p>
             </div>
             <p className="user-poster">Posted by: {props.user}</p>
           </div>
@@ -84,7 +123,7 @@ export default function Post(props){
           {tags.mentalHealth && <div className="tag">Mental Health</div>}
           {tags.learning && <div className="tag">Learning</div>}
           {tags.fitness && <div className="tag">Fitness</div>}
-          
+          {tags.moreTags && <div className="tag">{tags.moreTags}</div>}
         </div>
       </div>
       <div className="ranking-post">

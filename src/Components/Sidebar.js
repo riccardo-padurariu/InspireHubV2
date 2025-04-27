@@ -22,6 +22,7 @@ import { Database, getDatabase } from "firebase/database";
 import { ref,get } from "firebase/database";
 import { push,set } from "firebase/database";
 import { app } from "../Authentification/Firebase";
+import down from '../Assets/down.svg';
 
 
 export default function Sidebar(props) {
@@ -77,7 +78,6 @@ export default function Sidebar(props) {
 
   const styleBoxNormal = {
     padding: '3px 13px',
-    width: '211px',
     height: '40px',
     display: 'flex',
     flexDirection: 'row',
@@ -90,7 +90,6 @@ export default function Sidebar(props) {
 
   const styleAi = {
     padding: '3px 13px',
-    width: '211px',
     height: '40px',
     display: 'flex',
     flexDirection: 'row',
@@ -103,11 +102,10 @@ export default function Sidebar(props) {
     borderColor: 'white'
   }
 
-  console.log(styleBoxNormal);
+  //console.log(styleBoxNormal);
 
   const styleBoxSelected = {
     padding: '3px 13px',
-    width: '211px',
     height: '40px',
     display: 'flex',
     flexDirection: 'row',
@@ -163,10 +161,31 @@ export default function Sidebar(props) {
     setPage(path);
   }
 
+  const [size,setSize] = React.useState(null);
+
+  React.useEffect(() => {
+
+    if(typeof window === 'undefined') return;
+
+    const handleResize = () => {
+      setSize(window.innerWidth);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize',handleResize);
+    return () => window.removeEventListener('resize',handleResize);
+  },[]);
+
+  if(size == null) return null;
+
+  const srcImg = size > 1122 ? logo : down;
+  //console.log(srcImg);
+
 
   return (
     <div className="sidebar-container">
-      <Link to={'/home'}><img className="logo-dash" src={logo}></img></Link>
+      <Link to={'/home'}><img className="logo-dash" src={srcImg}></img></Link>
       <div className="pfp">
         <img className="pfp-img" src={pfp}></img>
         <div className="infos">
@@ -203,7 +222,7 @@ export default function Sidebar(props) {
             <img className="section-dash-img" src={window.location.pathname === '/dashboard/settings' ? settNormal : sett}></img>
             <p className="section-p" style={window.location.pathname === '/dashboard/settings' ? stylePSelected : stylePNormal}>Settings</p>
           </div>
-          <img src={line} style={{marginLeft: 20 + 'px',marginBottom: 10 + 'px'}}></img>
+          <img className="line-sidebar" src={line} style={{marginLeft: 20 + 'px',marginBottom: 10 + 'px'}}></img>
           <div className="copyright-dash">
             <p className="p1">Copyright &#169; 2025 InspireHub</p>
             <p className="p1">Prototype version 0x001</p>

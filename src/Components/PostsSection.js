@@ -1,6 +1,6 @@
 import React from "react";
 import '../Styles/PostsSection.css';
-import search from '../Assets/Search-icon.svg';
+import searchimg from '../Assets/Search-icon.svg';
 import Post from "./Post";
 import { useAuth } from "../Authentification/AuthContext";
 import { Database, getDatabase, onValue } from "firebase/database";
@@ -9,6 +9,8 @@ import ProgressBar from "./ProgressBar";
 import { app } from "../Authentification/Firebase";
 
 export default function PostsSection(props){
+
+  const [search,setSearch] = React.useState('');
 
   const { currentUser } = useAuth();
 
@@ -64,13 +66,18 @@ export default function PostsSection(props){
       return tag.tags.productivity;
     }else if(filter.all){
       return true;
+    }else if(filter.moreTags){
+      return !(!tag.tags.moreTags || tag.tags.moreTags === '');
     }
   }
 
   const filtArr = arr.filter(filterTag);
 
 
-  const displayArr = filtArr.map((item,index) => 
+
+  const displayArr = filtArr.filter((item) => {
+    return search.toLowerCase() === '' ? item : item.postName.toLowerCase().includes(search);
+  }).map((item,index) => 
     <Post 
       name={item.postName}
       description={item.postDescription}
@@ -80,14 +87,17 @@ export default function PostsSection(props){
       user={item.user}
       postKey={item.firebaseKey}
     />
-  )                
+  )
 
   function handleCreatePost() {
     props.setPostName('');
     props.setPostDescription('');
     props.setIsAddingPost(true);
+    props.setMoreTags(false);
   }
 
+  //function searchPost() 
+  //}
 
   window.addEventListener('resize', function() {
     document.querySelector('.post-section-container').style.height = window.innerHeight-305 + "px";
@@ -97,9 +107,9 @@ export default function PostsSection(props){
     <div className="post-section-container" style={{height: window.innerHeight-305 + "px", overflow: 'auto'}}>
       <div className="post-board">
         <div className="post-input">
-          <input className="search-post-input" type="text" placeholder="Search for a post"></input>
+          <input className="search-post-input" onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search for a post"></input>
           <button className="search-post-button">
-            <img src={search}></img>
+            <img src={searchimg}></img>
           </button>
         </div>
         <button className="create-post-button" onClick={handleCreatePost}>Create A Post</button>

@@ -12,6 +12,8 @@ export default function AddTaskModal(props) {
 
   const { currentUser } = useAuth();
 
+  const [isChecked,setIsChecked] = React.useState(false);
+
   const [idArr,setIdArr] = React.useState([]);
 
   const fetchData = async () => {
@@ -19,12 +21,14 @@ export default function AddTaskModal(props) {
     const userRef = ref(db, `users/${currentUser.uid}/tasks`);
     const date = new Date();
     const newTask = {
-        name: props.taskName,
-        description: props.taskDescription,
-        dueDate: String(props.taskDate),
-        isCompleted: false,
-        id: currentUser.displayName,
-        timestamp: Date.now()
+      name: props.taskName,
+      description: isChecked ? props.target : props.taskDescription,
+      isTarget: isChecked,
+      dueDate: String(props.taskDate),
+      isCompleted: false,
+      id: currentUser.displayName,
+      status: 1,
+      currentTarget: 0
     };
     
     await push(userRef, newTask);
@@ -65,11 +69,13 @@ export default function AddTaskModal(props) {
     props.setTaskList(oldArr => [...oldArr,
         {
             name: props.taskName,
-            description: props.taskDescription,
+            description: isChecked ? props.target : props.taskDescription,
+            isTarget: isChecked,
             dueDate: String(props.taskDate),
             isCompleted: false,
             id: currentUser.displayName,
-            status: 1
+            status: 1,
+            currentTarget: 0
         }
     ]);
 
@@ -112,23 +118,27 @@ export default function AddTaskModal(props) {
     const arr = props.taskList;
     arr[props.editIndex-1] = {
       name: props.taskName,
-      description: props.taskDescription,
+      description: isChecked ? props.target : props.taskDescription,
+      isTarget: isChecked,
       dueDate: String(props.taskDate),
       isCompleted: false,
-      status: 1
+      id: currentUser.displayName,
+      status: 1,
+      currentTarget: 0
     }
 
     const db = getDatabase(app);
     const userRef = ref(db, `users/${currentUser.uid}/tasks/${idArr[props.editIndex-1].id}`);
     const date = new Date();
     const newTask = {
-        name: props.taskName,
-        description: props.taskDescription,
-        dueDate: String(props.taskDate),
-        isCompleted: false,
-        id: currentUser.displayName,
-        timestamp: Date.now(),
-        status: 1
+      name: props.taskName,
+      description: isChecked ? props.target : props.taskDescription,
+      isTarget: isChecked,
+      dueDate: String(props.taskDate),
+      isCompleted: false,
+      id: currentUser.displayName,
+      status: 1,
+      currentTarget: 0
     };
     
     set(userRef, newTask);
@@ -136,11 +146,20 @@ export default function AddTaskModal(props) {
     props.setIsAdding(false);
   }
 
+  console.log(isChecked);
+
   return (
     <div className="add-task-div" style={props.isAdding ? styleOnAdding : styleOnNormal}>
       <div className="add-task-modal-container">
         <div className="title-exit-button">
-          <p className="add-task-title">Set your daily goals</p>
+          <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
+            <p className="add-task-title">Set your daily goals</p>
+            <label className="switch">
+              <input checked={isChecked} onChange={() => setIsChecked(!isChecked)} type="checkbox"></input>
+              <span className="slider round"></span>
+            </label>
+            <p className="switch-p">{isChecked ? 'Switch to normal task' : 'Switch to target task'}</p>
+          </div>
           <button className="exit-button" onClick={() => {props.setIsAdding(false)}}>
             <img className="cross-img" src={cross}></img>
           </button>
@@ -152,8 +171,14 @@ export default function AddTaskModal(props) {
               <input className="input-add-task name-modal" type="text" placeholder="Set your goal name" value={props.taskName} onChange={(e) => props.setTaskName(e.target.value)}></input>
             </div>
             <div className="add-task-input-div">
-              <p className="label-add-task">Goal Description</p>
-              <input className="input-add-task-description desc" type="text" placeholder="Set your goal description" value={props.taskDescription} onChange={(e) => props.setTaskDescription(e.target.value)}></input>
+              <p className="label-add-task">{isChecked ? 'Goal Target' : 'Goal Description'}</p>
+              {isChecked 
+              ? <div className="target">
+                  <p className="target-p">{props.target}</p>
+                  <button className="change" onClick={() => props.setTarget(props.target+1)}>+</button>
+                  <button className="change" onClick={() => props.setTarget(props.target > 0 ? props.target-1 : props.target)}>-</button>
+                </div> 
+              : <input className="input-add-task-description desc" type="text" placeholder="Set your goal description" value={props.taskDescription} onChange={(e) => props.setTaskDescription(e.target.value)}></input>}
             </div>
             <div className="add-task-input-div">
               <p className="label-add-task">Due Hour</p>

@@ -1,5 +1,5 @@
 import React from "react";
-import '../Styles/AiPage.css';
+import '../Styles/PostPage.css';
 import Sidebar from "../Components/Sidebar";
 import back from '../Assets/Background.svg';
 import Quote from "../Components/Quote";
@@ -10,12 +10,42 @@ import CommunityInfo from "../Components/CommunityInfos";
 import PostsSection from "../Components/PostsSection";
 import AddPostModal from "../Components/AddPostModal";
 import { app } from "../Authentification/Firebase";
-import { getDatabase,ref,get } from "firebase/database";
+import { getDatabase,ref,get,onValue } from "firebase/database";
+import { useAuth } from "../Authentification/AuthContext";
+import PostMainSection from "../Components/PostMainSection";
 
-export default function CommunityPage(props){
+export default function PostPage(props){
+
+  const { currentUser } = useAuth();
 
   const [postsList,setPostsList] = React.useState([]);
   const [isAddingPost,setIsAddingPost] = React.useState(false);
+
+  React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const userTasksRef = ref(db, `posts`);
+
+    const unsubscribe = onValue(userTasksRef, (snapshot) => {
+      if(snapshot.exists()){
+        const taskData = snapshot.val();
+
+        const tasksArray = Object.entries(taskData).map(([key,value]) => ({
+          ...value,
+          firebaseKey: key
+        }))
+
+        setPostsList(tasksArray);
+      }else{
+        setPostsList([]);
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
 
   const [likes,setLikes] = React.useState([]);
   const [dislikes,setDislikes] = React.useState([]);
@@ -57,22 +87,7 @@ export default function CommunityPage(props){
       <Sidebar setNeedsOverFlow={props.setNeedsOverFlow} setPageSelector={setPageSelector} pageSelector={pageSelector}/>
       <div className="features-dash" style={{height: window.innerHeight-65 + "px"}}>
         <CommunityInfo postsList={postsList}/>
-        <PostsSection 
-          isAddingPost={isAddingPost}
-          setIsAddingPost={setIsAddingPost}
-          postsList={postsList}
-          setPostsList={setPostsList}
-          setPostName={setPostName}
-          setPostDescription={setPostDescription}
-          postMoreTags={postMoreTags}
-          setPostMoreTags={setPostMoreTags}
-          likes={likes}
-          dislikes={dislikes}
-          setLikes={setLikes}
-          setDislikes={setDislikes}
-          moreTags={moreTags}
-          setMoreTags={setMoreTags}
-        />
+        <PostMainSection postKey={props.postKey}/>
       </div>
       <AddPostModal
         setIsAddingPost={setIsAddingPost}
