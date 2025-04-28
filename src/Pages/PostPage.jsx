@@ -18,6 +18,8 @@ export default function PostPage(props){
 
   const { currentUser } = useAuth();
 
+  const [commentsArray,setCommentsArray] = React.useState([]);
+
   const [postsList,setPostsList] = React.useState([]);
   const [isAddingPost,setIsAddingPost] = React.useState(false);
 
@@ -87,7 +89,11 @@ export default function PostPage(props){
       <Sidebar setNeedsOverFlow={props.setNeedsOverFlow} setPageSelector={setPageSelector} pageSelector={pageSelector}/>
       <div className="features-dash" style={{height: window.innerHeight-65 + "px"}}>
         <CommunityInfo postsList={postsList}/>
-        <PostMainSection postKey={props.postKey}/>
+        <PostMainSection
+          postKey={props.postKey}
+          commentsArray={commentsArray}
+          setCommentsArray={setCommentsArray}  
+        />
       </div>
       <AddPostModal
         setIsAddingPost={setIsAddingPost}

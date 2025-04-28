@@ -1,0 +1,54 @@
+.comment-user{
+  font-size: 19px;
+  color: white;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+}
+
+.user-and-date{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.comment-date{
+  font-size: 16px;
+  color: white;
+  font-weight:100;
+  margin-left: 10px;
+  margin: 0 0 12px 10px;
+}
+
+.comment-content{
+  color: white;
+  font-size: 16px;
+  margin: 0;
+}
+
+.statistic{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.comment-statistics{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.statistic-number{
+  color: white;
+}
+
+.comment-container{
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+.comment-pfp{
+  width: 36px;
+  margin-right: 20px;
+}

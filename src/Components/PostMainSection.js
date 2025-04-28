@@ -4,7 +4,8 @@ import img from '../Assets/User.svg';
 import img2 from '../Assets/up-and-down.svg';
 import { useAuth } from "../Authentification/AuthContext";
 import { app } from "../Authentification/Firebase";
-import { getDatabase,ref,onValue,update  } from "firebase/database";
+import { getDatabase,ref,onValue,update,push  } from "firebase/database";
+import Comment from "./Comment";
 
 export default function PostMainSection(props){
 
@@ -13,6 +14,8 @@ export default function PostMainSection(props){
   const [isPosting,setIsPosting] = React.useState(false);
 
   const { currentUser } = useAuth();
+
+  const [comment,setComment] = React.useState('');
 
   const [liked,setLiked] = React.useState(false);
   const [disliked,setDisliked] = React.useState(false);
@@ -42,6 +45,35 @@ export default function PostMainSection(props){
 
     return () => unsubscribe();
   }, [props.postKey]);
+
+
+  React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const commentsTasksRef = ref(db, `posts/${props.postKey}/comments`);
+
+    const unsubscribe = onValue(commentsTasksRef, (snapshot) => {
+      if(snapshot.exists()){
+        const commentsData = snapshot.val();
+        console.log(commentsData);
+
+        const commentsArr = Object.entries(commentsData).map(([key,value]) => ({
+          ...value,
+          firebaseKey: key
+        }))
+
+        props.setCommentsArray(commentsArr);
+      }else{
+        setPost([]);
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [props.postKey]);
+
 
   const tags = post.tags || {};
   
@@ -99,6 +131,26 @@ export default function PostMainSection(props){
       }
     }
 
+  async function fetchData() {
+    const db = getDatabase(app);
+    const postRef = ref(db, `posts/${props.postKey}/comments`);
+    const newComment = {
+      user: currentUser.displayName,
+      content: comment,
+      likes: 0,
+      dislikes: 0
+    };
+    
+    await push(postRef, newComment);
+  }
+
+  function postComment(){
+    fetchData().catch(error => console.error(error));
+
+    setComment('');
+    setIsPosting(false);
+  }
+
   return (
     <div className="post-main-section-container" style={{height: window.innerHeight-275 + "px",overflow: 'auto'}}>
       <div className="general-infos">
@@ -135,15 +187,23 @@ export default function PostMainSection(props){
         <p className="post-main-description-p">{post.postDescription}</p>
       </div>
       <div className="post-main-comments">
-        <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between'}}>
+        <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',marginBottom: isPosting ? '0' : '20px'}}>
           <p className="post-main-comments-p">Comments</p>
-          <button className="add-comment-button" onClick={() => setIsPosting(true)}>+ Add comment</button>
+          <button className="add-comment-button" onClick={() => {setIsPosting(true);setComment('');}}>+ Add comment</button>
         </div>
-        <div style={{display: isPosting ? 'flex' : 'none',flexDirection: 'row',marginTop: '12px'}}>
-          <textarea style={{wordWrap: 'break-word',resize: 'none'}} className="input-comment" rows="6" cols="40" placeholder="Add a comment..."></textarea>
-          <button className="post-comment-button">Post comment</button>
+        <div style={{display: isPosting ? 'flex' : 'none',flexDirection: 'row',marginTop: '12px',marginBottom:'20px'}}>
+          <textarea value={comment} onChange={(e) => setComment(e.target.value)} style={{wordWrap: 'break-word',resize: 'none'}} className="input-comment" rows="6" cols="40" placeholder="Add a comment..."></textarea>
+          <button className="post-comment-button" onClick={postComment}>Post comment</button>
           <button className="post-comment-button" onClick={() => setIsPosting(false)}>Exit</button>
         </div>
+        {props.commentsArray.map((item) => 
+          <Comment 
+            user={item.user}
+            likes={item.likes}
+            dislikes={item.dislikes}
+            content={item.content}
+          />
+        )}
       </div>
     </div>
   );
