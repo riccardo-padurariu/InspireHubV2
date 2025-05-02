@@ -16,10 +16,10 @@ export default function MainPage(props){
 
   const { currentUser } = useAuth();
 
-  if(window.location.href === 'http://localhost:3000/home')
-    document.body.style.overflow = "";
+  if(window.location.href === 'http://localhost:3002/home')
+    document.body.style.overflowY = "";
   else
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowY = "hidden";
 
     const sectionRef = useRef(null);
     const ScrollToSection = () => {

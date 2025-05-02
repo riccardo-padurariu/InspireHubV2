@@ -12,7 +12,7 @@ import Tag from "./Tag";
 import { app } from "../Authentification/Firebase";
 import { push } from "firebase/database";
 import arrow from '../Assets/line-md_arrow-down.png';
-
+import TextEditor from "./TextEditor";
 
 export default function AddPostModal(props) {
 
@@ -116,7 +116,7 @@ export default function AddPostModal(props) {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
   }
 
   const styleOnNormal = {
@@ -136,9 +136,9 @@ export default function AddPostModal(props) {
 
   return (
     <div className="add-task-div" style={props.isAddingPost ? styleOnAdding : styleOnNormal}>
-      <div className="add-task-modal-container" style={{width: '1000px'}}>
+      <div className="add-task-modal-container" style={{height: '550px',width: '1000px',overflowY: 'auto',overflowX: 'hidden'}}>
         <div className="title-exit-button">
-          <p className="add-task-title">'Share your ideas with our community!</p>
+          <p className="add-task-title">Share your ideas with our community!</p>
           <button className="exit-button" onClick={() => {props.setPostMoreTags('');props.setIsAddingPost(false)}}>
             <img className="cross-img" src={cross}></img>
           </button>
@@ -151,7 +151,7 @@ export default function AddPostModal(props) {
             </div>
             <div className="add-task-input-div">
               <p className="label-add-task">Post content</p>
-              <textarea rows="6" style={{wordWrap: 'break-word',resize: 'none',width: '510px'}} className="input-add-task-description desc" value={props.postDescription} type="text" placeholder="Tell us about your experience" onChange={(e) => props.setPostDescription(e.target.value)}></textarea>
+              <TextEditor value={props.postDescription} setValue={props.setPostDescription}/>
             </div>
             <p className="label-add-task">Add tags</p>
             <div className="tags-modal-div" style={{width: '610px'}}>

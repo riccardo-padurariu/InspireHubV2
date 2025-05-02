@@ -106,3 +106,13 @@
   margin-left: 20px;
   cursor: pointer;
 }
+
+.post-main-description-p,
+.description-p{
+  color: white;
+  line-height: 0.3;
+}
+
+.post-main-description-p  br,b,i,strong,p{
+  color: white;
+}

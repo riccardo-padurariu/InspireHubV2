@@ -20,6 +20,8 @@ export default function PostMainSection(props){
   const [liked,setLiked] = React.useState(false);
   const [disliked,setDisliked] = React.useState(false);
 
+  const [replyArray,setReplyArray] = React.useState([]);
+
   React.useEffect(() => {
     if(!currentUser) return;
 
@@ -65,8 +67,10 @@ export default function PostMainSection(props){
 
         props.setCommentsArray(commentsArr);
       }else{
-        setPost([]);
+        props.setCommentsArray([]);
       }
+
+      console.log(props.commentsArray);
     }, (error) => {
       console.log('Error fetching tasks: ', error);
     });
@@ -134,11 +138,14 @@ export default function PostMainSection(props){
   async function fetchData() {
     const db = getDatabase(app);
     const postRef = ref(db, `posts/${props.postKey}/comments`);
+    const date = new Date();
+    const dateStr = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`
     const newComment = {
       user: currentUser.displayName,
       content: comment,
       likes: 0,
-      dislikes: 0
+      dislikes: 0,
+      date: dateStr
     };
     
     await push(postRef, newComment);
@@ -184,7 +191,7 @@ export default function PostMainSection(props){
         </div>
       </div>
       <div className="post-main-description">
-        <p className="post-main-description-p">{post.postDescription}</p>
+        <p dangerouslySetInnerHTML={{__html: `<p className="description-p">${post.postDescription}</p>`}} className="post-main-description-p"></p>
       </div>
       <div className="post-main-comments">
         <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',marginBottom: isPosting ? '0' : '20px'}}>
@@ -202,6 +209,11 @@ export default function PostMainSection(props){
             likes={item.likes}
             dislikes={item.dislikes}
             content={item.content}
+            date={item.date}
+            replyArray={replyArray}
+            setReplyArray={setReplyArray}
+            postKey={props.postKey}
+            commentKey={item.firebaseKey}
           />
         )}
       </div>
