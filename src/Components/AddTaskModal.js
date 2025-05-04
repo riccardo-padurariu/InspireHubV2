@@ -66,27 +66,29 @@ export default function AddTaskModal(props) {
   }
 
   function addTask(){
-    props.setTaskList(oldArr => [...oldArr,
-        {
-            name: props.taskName,
-            description: isChecked ? props.target : props.taskDescription,
-            isTarget: isChecked,
-            dueDate: String(props.taskDate),
-            isCompleted: false,
-            id: currentUser.displayName,
-            status: 1,
-            currentTarget: 0
-        }
-    ]);
+    if(handleErrors()){
+      props.setTaskList(oldArr => [...oldArr,
+          {
+              name: props.taskName,
+              description: isChecked ? props.target : props.taskDescription,
+              isTarget: isChecked,
+              dueDate: String(props.taskDate),
+              isCompleted: false,
+              id: currentUser.displayName,
+              status: 1,
+              currentTarget: 0
+          }
+      ]);
 
-    fetchData().catch(error => {
-        console.error("Error saving task to Firebase:", error);
-    });
+      fetchData().catch(error => {
+          console.error("Error saving task to Firebase:", error);
+      });
 
-    props.setIsAdding(false);
-    props.setTaskName('');
-    props.setTaskDate('');
-    props.setTaskDescription('');
+      props.setIsAdding(false);
+      props.setTaskName('');
+      props.setTaskDate('');
+      props.setTaskDescription('');
+    }
   }
 
   const fetchDataEdit = async () => {
@@ -148,6 +150,40 @@ export default function AddTaskModal(props) {
 
   console.log(isChecked);
 
+  /* Error handling before fetching the data to firebase */
+  function handleErrors() {
+    let isOk = true;
+    if(props.taskName === ''){
+      document.querySelector('.error-name').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-name').style.opacity = 0;
+      },7000)
+      isOk = false;
+    }
+    if(!isChecked && props.taskDescription === ''){
+      document.querySelector('.error-desc').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-desc').style.opacity = 0;
+      },7000)
+      isOk = false;
+    }else if(isChecked && props.target === 0){
+      document.querySelector('.error-desc').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-desc').style.opacity = 0;
+      },7000)
+      isOk = false;
+    }
+    if(props.taskDate === ''){
+      document.querySelector('.error-hour').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-hour').style.opacity = 0;
+      },7000)
+      isOk = false;
+    }
+    
+    return isOk;
+  }
+
   return (
     <div className="add-task-div" style={props.isAdding ? styleOnAdding : styleOnNormal}>
       <div className="add-task-modal-container">
@@ -167,11 +203,18 @@ export default function AddTaskModal(props) {
         <div className="info-img-div">
           <div className="infos">
             <div className="add-task-input-div">
-              <p className="label-add-task">Goal Name</p>
+            <div className="label-and-error">
+                <p className="label-add-task">Goal name</p>
+                <p className="error-task error-name">*Enter a goal name!</p>
+              </div>
               <input className="input-add-task name-modal" type="text" placeholder="Set your goal name" value={props.taskName} onChange={(e) => props.setTaskName(e.target.value)}></input>
             </div>
             <div className="add-task-input-div">
-              <p className="label-add-task">{isChecked ? 'Goal Target' : 'Goal Description'}</p>
+            <div className="label-and-error">
+            <p className="label-add-task">{isChecked ? 'Goal Target' : 'Goal Description'}</p>
+                <p className="error-task error-desc">{`*Enter a goal ${isChecked ? 'target' : 'description'}!`}</p>
+              </div>
+              
               {isChecked 
               ? <div className="target">
                   <p className="target-p">{props.target}</p>
@@ -181,7 +224,10 @@ export default function AddTaskModal(props) {
               : <input className="input-add-task-description desc" type="text" placeholder="Set your goal description" value={props.taskDescription} onChange={(e) => props.setTaskDescription(e.target.value)}></input>}
             </div>
             <div className="add-task-input-div">
-              <p className="label-add-task">Due Hour</p>
+            <div className="label-and-error">
+                <p className="label-add-task">Due Hour</p>
+                <p className="error-task error-hour">*Enter a due hour!</p>
+              </div>
               <input className="input-add-task date" type="time" value={props.taskDate} onChange={(e) => props.setTaskDate(e.target.value)}></input>
             </div>
             <button className="add-task-modal-button" onClick={props.isEditing ? editTaskModal : addTask}>{props.isEditing ? "EDIT TASK" : "ADD TASK"}</button>

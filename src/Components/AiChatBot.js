@@ -66,20 +66,6 @@ export default function AiChatBot() {
   const maxHeight = 2780;
 
   const portion = (maxHeight-standardHeight)/33;
-  
-  //window.addEventListener('resize',() => {
-    //document.querySelector('.chatbot-container').style.height = 67 +  window.innerHeight > standardHeight ? (window.innerHeight -standardHeight) / portion + '%' : '67%';
-  //})
-
-  //var objDiv = document.querySelector('.chat-body');
-  //console.log(objDiv);
-  //bjDiv.scrollTop = window.innerHeight - 315;
-
-  //const bottomRef = useRef(null);
-
-  //useEffect(() => {
-    //bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  //}, []);
 
   return(
     <div>

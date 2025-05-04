@@ -15,11 +15,13 @@ import { app } from "../Authentification/Firebase";
 import { ref,get } from "firebase/database";
 import { push,set } from "firebase/database";
 import { Database, getDatabase } from "firebase/database";
+import { useToast } from "../Components/ToastProvider";
 
 
 export default function RegisterPage() {
 
   const navigation = useNavigate();
+  const { addToast } = useToast();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -62,10 +64,6 @@ export default function RegisterPage() {
             
             const db = getDatabase(app);
             const userRef = ref(db, `users/${userCredential.user.uid}`);
-            await set(userRef, {
-                status: "initialized",
-                tasks: []
-            });
             
             setCurrentUser(userCredential.user);
             setDisplayError(false);
@@ -73,6 +71,7 @@ export default function RegisterPage() {
         } catch (error) {
             setDisplayError(true);
             setErrorMessage(getUserFriendlyError(error));
+            addToast(errorMessage,'error');
             setIsRegistering(false);
             console.log(error.code);
         }
@@ -88,17 +87,6 @@ export default function RegisterPage() {
             })
         }
     }
-
-    const fetchData = async () => {
-      const db = getDatabase(app);
-      const dbRef = push(ref(db,'UserData'));
-      set(dbRef, {
-       task: 'initialize'
-      }).then(() => {
-        alert('data saved succesfully')
-      });
-    }
-
     
 
   console.log(fullName);
@@ -107,8 +95,7 @@ export default function RegisterPage() {
     <div className="login-container">
       {userLoggedIn && <Navigate to="/dashboard/tasks" />}
       <img src={back} style={{width: 100 + '%', position: 'absolute'}}></img>
-      {displayError && <PopUpNotification error={errorMessage} role={'fail'}/>}
-      <form className="login-div" style={{paddingTop: (displayError ? 55 : 120) + 'px'}} onSubmit={onSubmit}>
+      <form className="login-div" style={{paddingTop: 55 + 'px',paddingBottom: '30px'}} onSubmit={onSubmit}>
         <img className="logo" src={logo}></img>
         <p className="title-login">Create your account</p>
         <div className="google-signin-div">
@@ -136,7 +123,7 @@ export default function RegisterPage() {
           <input className="terms-of-policy" type="checkbox"></input>
           <p className="forgot-password">I agree to InspireHub's Terms of Service and Privacy Policy</p>
         </div>
-        <button className="signin-button" onClick={fetchData}>GET STARTED</button>
+        <button className="signin-button">GET STARTED</button>
         <p className="option-register">Already have an account? <Link to={'/login'}><span className="register-link">Sign In</span></Link></p>
       </form>
     </div>

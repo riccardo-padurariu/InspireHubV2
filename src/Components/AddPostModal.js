@@ -13,20 +13,23 @@ import { app } from "../Authentification/Firebase";
 import { push } from "firebase/database";
 import arrow from '../Assets/line-md_arrow-down.png';
 import TextEditor from "./TextEditor";
+import { doc } from "firebase/firestore";
 
 export default function AddPostModal(props) {
 
+  /* Destructuring the current user */
   const { currentUser } = useAuth();
-
+  
+  /* Random states */
   const [ai,setAi] = React.useState(false);
   const [productivity,setProductivity] = React.useState(false);
   const [mentalHealth,setMentalHealth] = React.useState(false);
   const [learning,setLearning] = React.useState(false);
   const [fitness,setFitness] = React.useState(false);
   const [tag,setTag] = React.useState('');
-
   const [idArr,setIdArr] = React.useState([]);
 
+  /* Function to add the post to firebase */
   const fetchData = async () => {
     const db = getDatabase(app);
     const userRef = ref(db, `posts`);
@@ -47,70 +50,54 @@ export default function AddPostModal(props) {
       user: currentUser.displayName
     };
     
-    /*try{
-      await set(userRef,newPost);
-
-      const userPost = ref(db,`users/${currentUser.uid}/appreciatedPosts/${postFirebaseKey}`);
-      await set(userPost,{liked: false,disliked: true});
-    }catch (error) {
-      console.log(error);
-    }*/
-
       await push(userRef,newPost);
       const postFirebaseKey = userRef;
       console.log(postFirebaseKey);
   }
 
-  function addTask(){
-    props.setPostsList(oldArr => [...oldArr,
-        {
-            postName: props.postName,
-            postDescription: props.postDescription,
-            tags: {
-              ai: ai,
-              productivity: productivity,
-              mentalHealth: mentalHealth,
-              learning: learning,
-              fitness: fitness
-            },
-            likes: 0,
-            dislikes: 0,
-            user: currentUser.displayName
-        }
-    ]);
+  /* Adding the post in the post list */
+  function addPost(){
+    if(handleErrors()){// We use the error handling function
+      props.setPostsList(oldArr => [...oldArr,
+          {
+              postName: props.postName,
+              postDescription: props.postDescription,
+              tags: {
+                ai: ai,
+                productivity: productivity,
+                mentalHealth: mentalHealth,
+                learning: learning,
+                fitness: fitness
+              },
+              likes: 0,
+              dislikes: 0,
+              user: currentUser.displayName
+          }
+      ]);
 
-    fetchData().catch(error => {
-        console.error("Error saving task to Firebase:", error);
-    });
+      fetchData().catch(error => {
+          console.error("Error saving task to Firebase:", error);
+      });
 
-    /*const fetchUserPost = async () => {
-      const db = getDatabase();
-      const userPostsRef = ref(db,`users/${currentUser.uid}/appreciatedPosts/`);
-      await push(userPostsRef,{postId:element.firebaseKey,liked:false,disliked:false});
-    }
-
-    fetchUserPost();*/
-
-    props.setPostName('');
-    props.setPostDescription('');
-    props.setIsAddingPost(false);
-    setAi(false);
-    setProductivity(false);
-    setMentalHealth(false);
-    setLearning(false);
-    setFitness(false);
-    props.setMoreTags(false);
+      props.setPostName('');
+      props.setPostDescription('');
+      props.setIsAddingPost(false);
+      setAi(false);
+      setProductivity(false);
+      setMentalHealth(false);
+      setLearning(false);
+      setFitness(false);
+      props.setMoreTags(false);
   }
+}
   
-
+  /* The toggle styles for the modal */
   const styleOnAdding = {
     backdropFilter: 'blur(10px)',
     zIndex: 1000,
     position: 'fixed',
-    //marginLeft: '-1510px',
     left: 0,
     opacity: 1,
-    //width: '1520px',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -132,8 +119,44 @@ export default function AddPostModal(props) {
     justifyContent: 'center'
   }
 
-  console.log(props.postMoreTags);
+  /* Error handling before fetching the data to firebase */
+  function handleErrors() {
+    let isOk = true;
+    if(props.postName === ''){
+      document.querySelector('.error-name').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-name').style.opacity = 0;
+      },7000)
+      isOk = false;
+    } else if(props.postName.length < 6){
+      document.querySelector('.error-name').innerHTML = '*Enter a post title of at least 6 characters!';
+      document.querySelector('.error-name').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-name').style.opacity = 0;
+        document.querySelector('.error-name').innerHTML = '*Enter a post title!';
+      },7000)
+      isOk = false;
+    }
+    if(props.postDescription === ''){
+      document.querySelector('.error-desc').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-desc').style.opacity = 0;
+      },7000)
+      isOk = false;
+    }else if(props.postDescription.length < 20){
+      document.querySelector('.error-desc').innerHTML = '*Enter a post content of at least 20 characters!';
+      document.querySelector('.error-desc').style.opacity = 1;
+      setTimeout(() => {
+        document.querySelector('.error-desc').style.opacity = 0;
+        document.querySelector('.error-desc').innerHTML = '*Enter a post content!';
+      },7000)
+      isOk = false;
+    }
+    return isOk;
+  }
 
+
+  /* The HTML element */
   return (
     <div className="add-task-div" style={props.isAddingPost ? styleOnAdding : styleOnNormal}>
       <div className="add-task-modal-container" style={{height: '550px',width: '1000px',overflowY: 'auto',overflowX: 'hidden'}}>
@@ -146,11 +169,17 @@ export default function AddPostModal(props) {
         <div className="info-img-div" style={{marginLeft: '30px'}}>
           <div className="infos">
             <div className="add-task-input-div">
-              <p className="label-add-task">Post title</p>
+              <div className="label-and-error">
+                <p className="label-add-task">Post title</p>
+                <p className="error-task error-name">*Enter a post title!</p>
+              </div>
               <input style={{width: '500px'}} className="input-add-task name-modal" type="text" placeholder="Set your post title" value={props.postName} onChange={(e) => props.setPostName(e.target.value)}></input>
             </div>
             <div className="add-task-input-div">
-              <p className="label-add-task">Post content</p>
+            <div className="label-and-error">
+                <p className="label-add-task">Post content</p>
+                <p className="error-task error-desc">*Enter a post content!</p>
+              </div>
               <TextEditor value={props.postDescription} setValue={props.setPostDescription}/>
             </div>
             <p className="label-add-task">Add tags</p>
@@ -170,7 +199,7 @@ export default function AddPostModal(props) {
                 </div>}
               </div>
             </div>
-            <button className="add-task-modal-button" style={{fontSize: '11px',marginTop: '10px'}} onClick={addTask}>CREATE POST</button>
+            <button className="add-task-modal-button" style={{fontSize: '11px',marginTop: '10px'}} onClick={addPost}>CREATE POST</button>
           </div>
           <img className="info-img" src={img} style={{marginTop: '60px'}}></img>
         </div>

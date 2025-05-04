@@ -9,9 +9,11 @@ import { doSignInWithEmailAndPassword } from "../Authentification/Auth";
 import { doSignInWithGoogle } from "../Authentification/Auth";
 import { getAuth } from "firebase/auth";
 import PopUpNotification from "../Components/PopUpNotification";
+import { ToastProvider, useToast } from "../Components/ToastProvider";
 
 export default function LoginPage() {
   const navigation = useNavigate();
+  const { addToast } = useToast();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -45,6 +47,7 @@ export default function LoginPage() {
             setIsSigningIn(false);
             setErrorMessage(getUserFriendlyError(error));
             setDisplayError(true);
+            addToast(errorMessage,'error');
             console.log(error.code);
           }
       }
@@ -72,34 +75,33 @@ export default function LoginPage() {
 
 
   return (
-    <div className="login-container">
-      {userLoggedIn && <Navigate to="/dashboard/tasks" />}
-      <img src={back} style={{width: 100 + '%', position: 'absolute'}}></img>
-      {displayError && <PopUpNotification role={'fail'} error={errorMessage} />}
-      <form className="login-div" style={{paddingTop: (displayError ? 60 : 120) + 'px'}} onSubmit={onSubmit}>
-        <img className="logo" src={logo}></img>
-        <p className="title-login">Log into your account</p>
-        <div className="google-signin-div">
-          <button onClick={onGoogleSignIn} className="signin-with-google">
-            <img src={google} className="google-icon"></img>
-            Sign in with Google
-          </button>
-        </div>
-        <p className="p-continue">or continue with email</p>
-        <div className="data-input-flexbox">
-          <div className="data-input-div">
-            <p className="label">EMAIL ADRESS</p>
-            <input className="data-input" placeholder="Enter email adress" value={email} onChange={(e) => {setEmail(e.target.value)}}></input>
+      <div className="login-container">
+        {userLoggedIn && <Navigate to="/dashboard/tasks" />}
+        <img src={back} style={{width: 100 + '%', position: 'absolute'}}></img>
+        <form className="login-div" style={{paddingTop: (displayError ? 60 : 120) + 'px'}} onSubmit={onSubmit}>
+          <img className="logo" src={logo}></img>
+          <p className="title-login">Log into your account</p>
+          <div className="google-signin-div">
+            <button onClick={onGoogleSignIn} className="signin-with-google">
+              <img src={google} className="google-icon"></img>
+              Sign in with Google
+            </button>
           </div>
-          <div className="data-input-div">
-            <p className="label">PASSWORD</p>
-            <input className="data-input" placeholder="Enter your password" value={password} onChange={(e) => {setPassword(e.target.value)}}></input>
+          <p className="p-continue">or continue with email</p>
+          <div className="data-input-flexbox">
+            <div className="data-input-div">
+              <p className="label">EMAIL ADRESS</p>
+              <input className="data-input" placeholder="Enter email adress" value={email} onChange={(e) => {setEmail(e.target.value)}}></input>
+            </div>
+            <div className="data-input-div">
+              <p className="label">PASSWORD</p>
+              <input className="data-input" placeholder="Enter your password" value={password} onChange={(e) => {setPassword(e.target.value)}}></input>
+            </div>
           </div>
-        </div>
-        <p className="forgot-password">Forgot your password?</p>
-        <button className="signin-button">{isSigningIn ? 'SIGNING IN...' : 'SIGN IN'}</button>
-        <p className="option-register">Do not have an account yet? <Link to={'/register'}><span className="register-link">Sign Up</span></Link></p>
-      </form>
-    </div>
+          <p className="forgot-password">Forgot your password?</p>
+          <button className="signin-button">{isSigningIn ? 'SIGNING IN...' : 'SIGN IN'}</button>
+          <p className="option-register">Do not have an account yet? <Link to={'/register'}><span className="register-link">Sign Up</span></Link></p>
+        </form>
+      </div>
   );
 }

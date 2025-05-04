@@ -16,7 +16,7 @@ export default function MainPage(props){
 
   const { currentUser } = useAuth();
 
-  if(window.location.href === 'http://localhost:3002/home')
+  if(window.location.href === 'http://localhost:3000/home')
     document.body.style.overflowY = "";
   else
     document.body.style.overflowY = "hidden";

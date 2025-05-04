@@ -4,7 +4,7 @@
   background-color: #313e2c;
 }
 
-.notification-fail{
+.notification-error{
   color: #ff4d4d;
   background-color: #371818;
 }
@@ -55,7 +55,7 @@
   animation: progress 2.5s 0.3s linear;
 }
 
-.notification-progress-fail{
+.notification-progress-error{
   position: relative;
   left: 0.25rem;
   bottom: 0.25rem;

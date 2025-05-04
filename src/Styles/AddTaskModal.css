@@ -24,7 +24,7 @@
 
 .add-task-modal-container{
   width: 600px;
-  height: 515px;
+  height: 540px;
   background: linear-gradient(270deg, #5477C2 0%, #244CA2 49.04%);
   border: 1px solid;
   border-color: white;
@@ -230,4 +230,17 @@ input{
   cursor: pointer;
   background-color: #09122C;
   color: white;
+}
+
+.error-task{
+  color: rgb(255, 81, 81);
+  font-size: 15px;
+  margin-left: 20px;
+  opacity: 0;
+}
+
+.label-and-error{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

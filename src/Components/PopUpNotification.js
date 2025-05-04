@@ -3,16 +3,21 @@ import '../Styles/PopUpNotification.css';
 import icon from '../Assets/Icon.svg';
 import icon2 from '../Assets/Icon (1).svg';
 
-export default function PopUpNotification(props){
+export default function PopUpNotification({ toasts }){
+
+  console.log(toasts);
+
   return (
     <div>
-      <div className={`notification notification-${props.role}`}>
-        <div className="notification-body">
-          <img src={props.role === 'fail' ? icon2 : icon} className="notification-icon"></img>
-          {props.role === 'fail' ? `Error: ${props.error}` : props.role === 'created' ? 'Your account has been created!' : 'Succesfully logged-in!'}
+      {toasts.map(({id,message,type}) => 
+        <div className={`notification notification-${type}`}type>
+          <div className="notification-body">
+            <img src={type === 'error' ? icon2 : icon} className="notification-icon"></img>
+            {message !== '' ? message : 'Something went wrong...Please try again.'}
+          </div>
+          <div className={`notification-progress-${type}`}></div>
         </div>
-        <div className={`notification-progress-${props.role}`}></div>
-      </div>
+      )}
     </div>
   );
 }

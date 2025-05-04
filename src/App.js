@@ -17,6 +17,7 @@ import { getDatabase } from 'firebase/database';
 import { ref } from 'firebase/database';
 import PostPage from './Pages/PostPage';
 import { onValue } from 'firebase/database';
+import { ToastProvider } from './Components/ToastProvider';
 
 function AppContent() {
   const [needsOverflow,setNeedsOverflow] = React.useState(false);
@@ -85,9 +86,11 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ToastProvider>
   );
 }
 
