@@ -52,7 +52,6 @@ export default function Post(props){
     return () => unsubscribe();
   }, [currentUser]);
 
-
   /* Retriving the id's of the users who disliked the post*/
   React.useEffect(() => {
     if(!currentUser) return;
@@ -75,6 +74,33 @@ export default function Post(props){
 
     return () => unsubscribe();
   }, [currentUser]);
+
+  React.useEffect(() => {
+
+    if(!currentUser){
+      setDisliked(false);
+      setLiked(false);
+      return;
+    }
+
+    if(Array.isArray(likedBy) && Array.isArray(dislikedBy)){
+      if(existsInArray(likedBy,currentUser.uid).exists){
+        setLiked(true);
+        setDisliked(false);
+      } else if(existsInArray(dislikedBy,currentUser.uid).exists){
+        setDisliked(true);
+        setLiked(false);
+      } else {
+        setLiked(false);
+        setDisliked(false);
+      }
+    }
+
+    console.log('postKey: ' + props.postKey);
+    console.log('liked: ' + liked);
+    console.log('disliked: ' + disliked);
+
+  },[currentUser,likedBy,dislikedBy]);
 
 
   /* Processing the tags to know what to display on the UI*/
@@ -104,32 +130,41 @@ export default function Post(props){
 
     try{
       const obj = type === 'likes' ? {likes: amount} : {dislikes: amount};
-
-
-      //I'm crying hereeeee :(
-      /*const targetArr = type === 'likes' ? likedBy : dislikedBy;
-      const targetRef = type === 'likes' ? postRef2 : postRef3;        
-      const otherArr = type === 'likes' ? dislikedBy : likedBy;
-      const otherRef = type === 'likes' ? postRef3 : postRef2;
-
-      const functionObjTarget = existsInArray(targetArr,currentUser.uid);
-      const functionObjOther = existsInArray(otherArr,currentUser.uid);
-
-      if(!functionObjTarget.exists){
-        await push(targetRef,currentUser.uid);
-        if(functionObjOther.exists){
-          const deleteRef = ref(db,`posts/${props.postKey}/${type === 'likes' ? 'likedBy' : 'dislikedBy'}/${functionObjOther.index}`);
-          await remove(deleteRef);
-          alert('deleted');
-        }
-        //alert('ok');
-      }else{
-        const deleteRef = ref(db,`posts/${props.postKey}/${type === 'likes' ? 'likedBy' : 'dislikedBy'}/${functionObjTarget.index}`);
-        await remove(deleteRef);
-        alert('deleted');
-      }*/
-
       await update(postRef,obj);
+
+      if(type === 'likes'){
+        if(amount > props.likes){
+          await push(postRef2,currentUser.uid);
+
+          const dislikedId = existsInArray(dislikedBy,currentUser.uid);
+          if(dislikedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/dislikedBy/${dislikedId.index}`);
+            await remove(deleteRef);
+          }
+        } else {
+          const likedId = existsInArray(likedBy,currentUser.uid);
+          if(likedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/likedBy/${likedId.index}`);
+            await remove(deleteRef);
+          }
+        }
+      } else if(type === 'dislikes') {
+        if(amount > props.dislikes){
+          await push(postRef3,currentUser.uid);
+
+          const likedId = existsInArray(likedBy,currentUser.uid);
+          if(likedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/likedBy/${likedId.index}`);
+            await remove(deleteRef);
+          }
+        } else {
+          const dislikedId = existsInArray(dislikedBy,currentUser.uid);
+          if(dislikedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/dislikedBy/${dislikedId.index}`);
+            await remove(deleteRef);
+          }
+        }
+      }
     }catch(error){
       console.log('Error updating status: ',error);
     }
@@ -138,15 +173,15 @@ export default function Post(props){
   /* The event listeners for when the like or dislike button is pressed*/
   function like(){
     if(!liked){
-      setLiked(true);
       updateUserInteraction(props.likes+1,'likes');
+      setLiked(true);
       if(disliked){
         setDisliked(false);
         updateUserInteraction(props.dislikes-1,'dislikes');
       }
     }else {
-      setLiked(false);
       updateUserInteraction(props.likes-1,'likes');
+      setLiked(false);
     }
   }
 

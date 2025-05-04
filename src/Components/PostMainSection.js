@@ -6,6 +6,8 @@ import { useAuth } from "../Authentification/AuthContext";
 import { app } from "../Authentification/Firebase";
 import { getDatabase,ref,onValue,update,push  } from "firebase/database";
 import Comment from "./Comment";
+import down from '../Assets/down.svg';
+import up from '../Assets/up.svg';
 
 export default function PostMainSection(props){
 
@@ -182,9 +184,9 @@ export default function PostMainSection(props){
               </div>
             </div>
             <div className="main-post-stats">
-              <img onClick={dislike} style={{cursor: 'pointer'}} src={img2}></img>
+              <img onClick={dislike} style={{cursor: 'pointer'}} src={down}></img>
               <p className="stats-main-p">{post.dislikes}/{post.likes}</p>
-              <img onClick={like} style={{rotate: '180deg',cursor:'pointer'}} src={img2}></img>
+              <img onClick={like} style={{cursor:'pointer'}} src={up}></img>
             </div>
           </div>
 

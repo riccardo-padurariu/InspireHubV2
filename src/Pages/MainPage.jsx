@@ -10,6 +10,7 @@ import PoweredBy from "../Components/PoweredBy";
 import Footer from "../Components/Footer";
 import { useAuth } from "../Authentification/AuthContext";
 import { useRef } from "react";
+import newBg from '../Assets/new-bg.svg';
 
 
 export default function MainPage(props){
@@ -29,7 +30,7 @@ export default function MainPage(props){
 
   return (
     <div className="main-page-container">
-      <img className="back" src={background}></img>
+      <img className="back" src={newBg}></img>
       <Navbar setNeedsOverflow={props.setNeedsOverflow} />
       <Title ScrollIntoView={ScrollToSection}/>
       <Carousel />
