@@ -28,9 +28,10 @@ p{
   height: 65px;
   align-items: center;
   border: 1px solid transparent;
-  border-color: rgb(126, 2, 27);
   border-radius: 20px;
+  border-color: rgba(135, 35, 65, 1);
   backdrop-filter: blur(50px);
+  background-color: transparent;
 }
 
 .sections{

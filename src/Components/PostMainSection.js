@@ -8,21 +8,184 @@ import { getDatabase,ref,onValue,update,push  } from "firebase/database";
 import Comment from "./Comment";
 import down from '../Assets/down.svg';
 import up from '../Assets/up.svg';
+import { remove } from "firebase/database";
 
 export default function PostMainSection(props){
 
-  const [post,setPost] = React.useState({});
-
-  const [isPosting,setIsPosting] = React.useState(false);
-
   const { currentUser } = useAuth();
 
+  const [post,setPost] = React.useState({});
+  const [isPosting,setIsPosting] = React.useState(false);
   const [comment,setComment] = React.useState('');
-
   const [liked,setLiked] = React.useState(false);
   const [disliked,setDisliked] = React.useState(false);
-
   const [replyArray,setReplyArray] = React.useState([]);
+  const [likedBy,setLikedBy] = React.useState([]);
+  const [dislikedBy,setDislikedBy] = React.useState([]);
+
+  /* Retriving the id's of the users who liked the post*/
+  React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const likedByRef = ref(db, `posts/${props.postKey}/likedBy`);
+
+    const unsubscribe = onValue(likedByRef, (snapshot) => {
+      if(snapshot.exists()){
+        const likedByData = snapshot.val();
+        const likedByArr = Object.entries(likedByData);
+        const newArr = likedByArr.map(([key,value]) => ({user: value, firebaseKey: key}));
+
+        setLikedBy(newArr);
+      }else{
+        setLikedBy([]);
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  /* Retriving the id's of the users who disliked the post*/
+  React.useEffect(() => {
+    if(!currentUser) return;
+
+    const db = getDatabase(app);
+    const dislikedByRef = ref(db, `posts/${props.postKey}/dislikedBy`); 
+
+    const unsubscribe = onValue(dislikedByRef, (snapshot) => {
+      if(snapshot.exists()){
+        const dislikedByData = snapshot.val();
+        const dislikedByArr = Object.entries(dislikedByData);
+        const newArr = dislikedByArr.map(([key,value]) => ({user: value,firebaseKey: key}));
+        setDislikedBy(newArr);
+      }else{
+        setDislikedBy([]);
+      }
+    }, (error) => {
+      console.log('Error fetching tasks: ', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  /* Here we set the liked and disliked states based on the data that we are retrieving from firebase */ 
+  React.useEffect(() => {
+
+    if(!currentUser){
+      setDisliked(false);
+      setLiked(false);
+      return;
+    }
+
+    if(Array.isArray(likedBy) && Array.isArray(dislikedBy)){
+      if(existsInArray(likedBy,currentUser.uid).exists){
+        setLiked(true);
+        setDisliked(false);
+      } else if(existsInArray(dislikedBy,currentUser.uid).exists){
+        setDisliked(true);
+        setLiked(false);
+      } else {
+        setLiked(false);
+        setDisliked(false);
+      }
+    }
+
+    console.log('postKey: ' + props.postKey);
+    console.log('liked: ' + liked);
+    console.log('disliked: ' + disliked);
+
+  },[currentUser,likedBy,dislikedBy]);
+
+  function existsInArray(array,value){
+    let index = null;
+    for(let i=0;i<array.length;i++)
+      if(array[i].user === value){
+        index = array[i].firebaseKey;
+        return {exists: true, index: index};
+      }
+    return {exists: false, index: null};
+  }
+
+  /* Updating in the database the user interaction with the post based on the function paramaters*/
+  async function updateUserInteraction(amount,type){
+
+    const db = getDatabase(app);
+    const postRef = ref(db, `posts/${props.postKey}`);
+    const postRef2 = ref(db,`posts/${props.postKey}/likedBy`);
+    const postRef3 = ref(db,`posts/${props.postKey}/dislikedBy`);
+
+    try{
+      const obj = type === 'likes' ? {likes: amount} : {dislikes: amount};
+      await update(postRef,obj);
+
+      if(type === 'likes'){
+        if(amount > post.likes){
+          await push(postRef2,currentUser.uid);
+
+          const dislikedId = existsInArray(dislikedBy,currentUser.uid);
+          if(dislikedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/dislikedBy/${dislikedId.index}`);
+            await remove(deleteRef);
+          }
+        } else {
+          const likedId = existsInArray(likedBy,currentUser.uid);
+          if(likedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/likedBy/${likedId.index}`);
+            await remove(deleteRef);
+          }
+        }
+      } else if(type === 'dislikes') {
+        if(amount > post.dislikes){
+          await push(postRef3,currentUser.uid);
+
+          const likedId = existsInArray(likedBy,currentUser.uid);
+          if(likedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/likedBy/${likedId.index}`);
+            await remove(deleteRef);
+          }
+        } else {
+          const dislikedId = existsInArray(dislikedBy,currentUser.uid);
+          if(dislikedId.exists){
+            const deleteRef = ref(db,`posts/${props.postKey}/dislikedBy/${dislikedId.index}`);
+            await remove(deleteRef);
+          }
+        }
+      }
+    }catch(error){
+      console.log('Error updating status: ',error);
+    }
+  }
+
+  /* The event listeners for when the like or dislike button is pressed*/
+  function like(){
+    if(!liked){
+      updateUserInteraction(post.likes+1,'likes');
+      setLiked(true);
+      if(disliked){
+        setDisliked(false);
+        updateUserInteraction(post.dislikes-1,'dislikes');
+      }
+    }else {
+      updateUserInteraction(post.likes-1,'likes');
+      setLiked(false);
+    }
+  }
+
+  function dislike(){
+    if(!disliked){
+      setDisliked(true);
+      updateUserInteraction(post.dislikes+1,'dislikes');
+      if(liked){
+        setLiked(false);
+        updateUserInteraction(post.likes-1,'likes');
+      }
+    }else{
+      setDisliked(false);
+      updateUserInteraction(post.dislikes-1,'dislikes');
+    }
+  }
 
   React.useEffect(() => {
     if(!currentUser) return;
@@ -38,8 +201,6 @@ export default function PostMainSection(props){
 
 
         setPost(postObj);
-        //console.log(postObj);
-        //console.log(postData);
       }else{
         setPost({});
       }
@@ -91,51 +252,7 @@ export default function PostMainSection(props){
     document.querySelector('.post-main-section-container').style.height = window.innerHeight-275 + "px";
   });
 
-  async function updateUserInteraction(amount,type){
   
-      const db = getDatabase(app);
-      const postRef = ref(db, `posts/${props.postKey}`);
-      const userRef = ref(db,`users/${currentUser.uid}/appreciatedPosts/${props.postKey}`);
-  
-      try{
-        const obj = type === 'likes' ? {likes:amount} : {dislikes:amount};
-        const app = {liked: liked,disliked: disliked};
-        console.log()
-        //await set(userRef,app);
-        await update(postRef,obj);
-        //alert('Updated');
-      }catch(error){
-        console.log('Error updating status: ',error);
-      }
-    }
-  
-    function like(){
-      if(!liked){
-        setLiked(true);
-        updateUserInteraction(post.likes+1,'likes');
-        if(disliked){
-          setDisliked(false);
-          updateUserInteraction(post.dislikes-1,'dislikes');
-        }
-      }else {
-        setLiked(false);
-        updateUserInteraction(post.likes-1,'likes');
-      }
-    }
-  
-    function dislike(){
-      if(!disliked){
-        setDisliked(true);
-        updateUserInteraction(post.dislikes+1,'dislikes');
-        if(liked){
-          setLiked(false);
-          updateUserInteraction(post.likes-1,'likes');
-        }
-      }else{
-        setDisliked(false);
-        updateUserInteraction(post.dislikes-1,'dislikes');
-      }
-    }
 
   async function fetchData() {
     const db = getDatabase(app);

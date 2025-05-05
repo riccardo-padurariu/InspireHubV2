@@ -75,6 +75,7 @@ export default function Post(props){
     return () => unsubscribe();
   }, [currentUser]);
 
+  /* Here we set the liked and disliked states based on the data that we are retrieving from firebase */ 
   React.useEffect(() => {
 
     if(!currentUser){
