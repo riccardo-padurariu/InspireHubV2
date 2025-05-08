@@ -2,25 +2,15 @@ import React from "react";
 import '../Styles/Carousel.css';
 import dot from '../Assets/Ellipse 12.png';
 import arrow from '../Assets/line-md_arrow-down.png';
-import motivationalQuotes from "../QuotesData";
+import { randomize } from "../QuotesData";
 
 export default function Carousel() {
 
   let quotes = [];
 
-  function randomize(){
-    for(let i=0;i<6;i++){
-    const randIndex = Math.floor(Math.random() * 100);
-    const t = motivationalQuotes[randIndex].quote;
-    const a = motivationalQuotes[randIndex].author;
-    const obj = {text: t, auth: a};
-    quotes.push(obj);
-    }
-  }
-
   const date = new Date();
   if(date.getHours() == 0);
-    randomize();
+    randomize(quotes);
 
   console.log(quotes);
 

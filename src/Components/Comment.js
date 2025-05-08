@@ -281,7 +281,7 @@ export default function Comment(props){
           </div>}
           {show && replyArray.map((item) => 
             <Reply
-              user={currentUser.displayName}
+              user={item.user}
               date={item.date}
               content={item.content}
               likes={item.likes}

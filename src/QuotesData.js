@@ -101,4 +101,23 @@ const motivationalQuotes = [
   { quote: "You were born to do this.", author: "Unknown" }
 ];
 
-export default motivationalQuotes;
+
+function randomize(array){
+    for(let i=0;i<6;i++){
+    const randIndex = Math.floor(Math.random() * 100);
+    const t = motivationalQuotes[randIndex].quote;
+    const a = motivationalQuotes[randIndex].author;
+    const obj = {text: t, auth: a};
+    array.push(obj);
+    }
+  }
+
+function getQuote(){
+  const randIndex = Math.floor(Math.random() * 100);
+  const t = motivationalQuotes[randIndex].quote;
+  const a = motivationalQuotes[randIndex].author;
+  const obj = {text: t, auth: a};
+  return obj; 
+}
+
+export { randomize,getQuote };

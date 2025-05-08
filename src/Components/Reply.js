@@ -183,6 +183,8 @@ export default function Reply(props){
     }
   }
 
+  console.log(props.user);
+
   /* The HTML component */
   return(
     <div style={{marginBottom: '10px'}} className="comment-container">
