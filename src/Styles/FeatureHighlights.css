@@ -21,7 +21,7 @@
   font-family: Outfit;
   font-size: 14px;
   border: 2px solid;
-  border-color: rgb(62, 2, 126);
+  border-color: #BE3144;
   border-radius: 20px;
   background-color: rgba(9, 18, 44, 0.3);
   color: #C9C9C9;
@@ -58,7 +58,7 @@
   margin-left: 30px;
   border: 1px solid;
   border-radius: 20px;
-  border-color: rgb(62, 2, 126);
+  border-color: #BE3144;
   padding: 35px 25px;
   margin-bottom: 20px;
   backdrop-filter: blur(10px);
@@ -70,7 +70,7 @@
   margin-left: 30px;
   border: 1px solid;
   border-radius: 20px;
-  border-color: rgb(62, 2, 126);
+  border-color: #BE3144;
   padding: 35px 25px;
   backdrop-filter: blur(10px);
 }

@@ -245,13 +245,15 @@ export default function Task(props) {
             <img className="arr-task" style={{rotate: isExtended ? '' : '180deg'}} src={arr}></img>
           </button>
         </div>
-        <div className="task-info" style={isExtended ? styleInfoExtended : styleInfosNormal}>
-          <p className="task-attribute">{isExtended ? `Nr task: ${props.index}` : `${props.index}`}</p>
-          <p className="task-attribute task-name" style={{marginLeft: (isExtended ? 0 : 52) + 'px'}}>{isExtended ? `Task name: ${props.name}` : `${props.name}`}</p>
-          <p className="task-attribute date" style={{marginLeft: (isExtended ? 0 : 10) + 'px'}}>{isExtended ? `Due hour: ${props.dueDate}` : `${props.dueDate}`}</p>
+        <div style={{display: 'flex',flexDirection: 'column', flex: 1,marginRight:isExtended ? '130px' : '-20px'}}>
+          <div className="task-info" style={styleInfosNormal}>
+            <p className="task-attribute">{isExtended ? `Nr task: ${props.index}` : `${props.index}`}</p>
+            <p className="task-attribute task-name" style={{marginLeft: (isExtended ? 0 : 52) + 'px'}}>{`${props.name}`}</p>
+            <p className="task-attribute date" style={{marginLeft: (isExtended ? 0 : 10) + 'px'}}>{`${props.dueDate}`}</p>
+            {props.isTarget ? <p className={props.currentTarget === props.description ? "target-task-completed" : "target-task"}>{props.currentTarget}/{props.description}</p>  : <p className="task-attribute">{(props.isCompleted ? 'Completed' : (props.status === 0 ? 'Due' : 'In progress'))}</p>}
+          </div>
           {isExtended && !props.isTarget && <p className="task-attribute">{`Task description: ${props.description}`}</p>}
           {isExtended && props.isTarget && <p className="task-attribute">{`Task target: ${props.description}`}</p>}
-          {props.isTarget ? <p className={props.currentTarget === props.description ? "target-task-completed" : "target-task"}>{props.currentTarget}/{props.description}</p>  : <p className="task-attribute">{isExtended ? `Task status: ${props.isCompleted ? 'Completed' : 'In progress'}` : (props.isCompleted ? 'Completed' : (props.status === 0 ? 'Due' : 'In progress'))}</p>}
         </div>
         <div className="user-todolist-buttons" style={isExtended ? styleUserButtonsExtended : styleUserButtonsNormal}>
           {props.isTarget

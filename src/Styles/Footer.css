@@ -9,6 +9,7 @@
   margin-left: 280px;
   width: 230px;
   justify-content: space-between;
+  position: relative;
 }
 
 .div2{
@@ -28,7 +29,7 @@
   width: 1065px;
   height: 153px;
   border: 1px solid;
-  border-color: red;
+  border-color: #BE3144;
   padding: 20px 30px;
   border-radius: 20px;
 }
@@ -44,7 +45,7 @@
   border-radius: 12px;
   background-color: #09122C4D;
   border: 1px solid;
-  border-color: red;
+  border-color: #BE3144;
   width: 230px;
   position: absolute;
 }
@@ -56,6 +57,7 @@
 }
 
 .copyright{
+  position: relative;
   margin-top: 35px;
   margin-left: 200px;
 }
@@ -76,4 +78,8 @@
   border: none;
   cursor: pointer;
   padding: 7px 12px;
+}
+
+.page{
+  cursor: pointer;
 }

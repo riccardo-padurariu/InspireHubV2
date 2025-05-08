@@ -29,7 +29,7 @@ p{
   align-items: center;
   border: 1px solid transparent;
   border-radius: 20px;
-  border-color: rgba(135, 35, 65, 1);
+  border-color: #BE3144;
   backdrop-filter: blur(50px);
   background-color: transparent;
 }

@@ -215,7 +215,6 @@ export default function Post(props){
             <p className="user-poster">Posted by: {props.user}</p>
           </div>
         </div>
-        <img src={line}></img>
         <div className="tags">
           {hasNoTags() ? <p className="tags-post-title">No tags </p> : <p className="tags-post-title">Tags: </p>}
           {tags.ai && <div className="tag">AI</div>}

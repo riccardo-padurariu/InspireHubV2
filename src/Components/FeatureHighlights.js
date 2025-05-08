@@ -16,8 +16,7 @@ export default function FeatureHighlights() {
               <p className="ft-details">Start each day with powerful words of wisdom. Our daily quotes are carefully selected to uplift your mindset, boost confidence, and help you stay focused on your goals.</p>
             </div>
             <div className="feature">
-              <p className="ft-title">Supportive Community 
-              <span className="ft-details">(Future Feature)</span></p>
+              <p className="ft-title">Supportive Community</p>
               <p className="ft-details">You're not alone on this journey! Connect with like-minded individuals, share experiences, and gain motivation from a positive, growth-focused community.</p>
             </div>
           </div>

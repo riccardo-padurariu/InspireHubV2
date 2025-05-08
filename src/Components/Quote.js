@@ -11,7 +11,7 @@ export default function Quote() {
     <div className="quote-main-div">
       <div className="quote-container">
         <p className="quote-title">Today's quote</p>
-        <p className="quote-description">{`${randQuote.text}  -  ${randQuote.auth}`}</p>
+        <p className="quote-description">You don’t grow when you’re comfortable. - Unknown</p>
       </div>
       <div className="more-quotes-container">
         <p className="more-quotes-title">Want more inspiration?</p>
