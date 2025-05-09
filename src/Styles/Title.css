@@ -64,6 +64,16 @@
   font-family: Outfit;
   font-size: 16px;
   position: relative;
+  transition: translateY 0.35s,
+  opacity 0.15s;
+}
+
+.begin-button:hover{
+  transform: translateY(-2px);
+}
+
+.begin-button:active{
+  opacity: 0.4;
 }
 
 .mission-button{
@@ -79,5 +89,14 @@
   font-size: 16px;
   cursor: pointer;
   position: relative;
+  transition: translateY 0.35s,
+  opacity 0.15s;
+}
 
+.mission-button:hover{
+  transform: translateY(-2px);
+}
+
+.mission-button:active{
+  opacity: 0.4;
 }

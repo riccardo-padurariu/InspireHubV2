@@ -61,7 +61,7 @@ export default function TextEditor(props) {
               && 
               <CKEditor 
                 editor={ClassicEditor} 
-                config={editorConfig} 
+                config={editorConfig}
                 value={props.value} 
                 onChange={(event,editor) => {
                   const data = editor.getData();

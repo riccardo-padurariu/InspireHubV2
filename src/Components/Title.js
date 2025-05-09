@@ -9,7 +9,7 @@ export default function Title(props) {
         <p className="big-title"><span className="big-ass-title">Find inspiration.</span>Grow.Become the Best Version of Yourself.</p>
         <p className="subtitle">InspireHub is your go-to place for support, inspiration, and tools to transform your life.</p>
         <div className="title-buttons">
-          <button className="begin-button" onClick={() => window.location = 'dashboard/tasks'}>Begin Your Journey</button>
+          <button className="begin-button" onClick={() => window.location = 'dashboard/community'}>Begin Your Journey</button>
           <button className="mission-button" onClick={() => window.scrollTo({top: window.innerHeight+450,behavior:'smooth'})}>Our Mission</button>
         </div>
       </div>

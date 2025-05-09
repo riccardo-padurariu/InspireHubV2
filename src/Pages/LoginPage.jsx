@@ -76,7 +76,7 @@ export default function LoginPage() {
 
   return (
       <div className="login-container">
-        {userLoggedIn && <Navigate to="/dashboard/tasks" />}
+        {userLoggedIn && <Navigate to="/dashboard/community" />}
         <img src={back} style={{width: 100 + '%', position: 'absolute'}}></img>
         <form className="login-div" style={{paddingTop: (displayError ? 60 : 120) + 'px'}} onSubmit={onSubmit}>
           <img className="logo" src={logo}></img>
